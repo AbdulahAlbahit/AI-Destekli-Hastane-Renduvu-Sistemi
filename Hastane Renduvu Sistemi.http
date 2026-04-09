@@ -1,0 +1,6 @@
+@Hastane_Renduvu_Sistemi_HostAddress = http://localhost:5210
+
+GET {{Hastane_Renduvu_Sistemi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
