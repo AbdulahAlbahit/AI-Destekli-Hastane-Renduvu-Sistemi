@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace Data_Accese_Layer.Entities;
 
-public partial class Appointment
+public partial class Appointment 
 {
+ 
+   
     public int AppointmentId { get; set; }
 
     public DateOnly TheDate { get; set; }
@@ -24,4 +26,8 @@ public partial class Appointment
     public virtual Doctor? Doctor { get; set; }
 
     public virtual Patient? Patient { get; set; }
+
+   
+
+
 }

@@ -27,7 +27,7 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Patient> Patients { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=.;Database=HOSPITAL_DATABASE;User id=abdulah;password=abdulah123;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer(SqlCon.con);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,7 +38,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("APPOINTMENTS", "HOSPITAL_SYSTEM");
 
             entity.Property(e => e.AppointmentId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("APPOINTMENT_ID");
             entity.Property(e => e.ClinicId).HasColumnName("CLINIC_ID");
             entity.Property(e => e.DoctorId).HasColumnName("DOCTOR_ID");
@@ -70,7 +70,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("CLINICS", "HOSPITAL_SYSTEM");
 
             entity.Property(e => e.ClinicId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("CLINIC_ID");
             entity.Property(e => e.ClinicNumber).HasColumnName("CLINIC_NUMBER");
             entity.Property(e => e.DeptId).HasColumnName("DEPT_ID");
@@ -88,7 +88,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("DEPARTMENTS", "HOSPITAL_SYSTEM");
 
             entity.Property(e => e.DeptId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("DEPT_ID");
             entity.Property(e => e.DeptName)
                 .HasMaxLength(50)
@@ -103,7 +103,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("DOCTORS", "HOSPITAL_SYSTEM");
 
             entity.Property(e => e.DoctorId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("DOCTOR_ID");
             entity.Property(e => e.ClinicId).HasColumnName("CLINIC_ID");
             entity.Property(e => e.DoctorName)
@@ -135,7 +135,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("PATIENTS", "HOSPITAL_SYSTEM");
 
             entity.Property(e => e.PatientId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("PATIENT_ID");
             entity.Property(e => e.DateOfBirth).HasColumnName("DATE_OF_BIRTH");
             entity.Property(e => e.Gender)
