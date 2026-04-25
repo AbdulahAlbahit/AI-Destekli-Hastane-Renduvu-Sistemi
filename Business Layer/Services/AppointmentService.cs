@@ -1,4 +1,5 @@
-﻿using Data_Accese_Layer.Entities;
+﻿using Data_Accese_Layer.Dto;
+using Data_Accese_Layer.Entities;
 using Data_Accese_Layer.Repos;
 using System;
 using System.Collections.Generic;
@@ -15,29 +16,41 @@ namespace Business_Layer.Services
             _appointment = appointment;
         }
 
-        public async Task AddAppointment(Appointment appointment)
+        public async Task<bool> AddAppointment(Appointment appointment)
         {
-           await _appointment.AddAppointment(appointment);
+            if (await _appointment.AddAppointment(appointment))
+                return true;
+
+           return false;
+
         }
 
-        public async Task DeleteAppointment(int id)
+        public async Task<bool> DeleteAppointment(int id)
         {
-          await  _appointment.DeleteAppointment(id); 
+            if (await _appointment.DeleteAppointment(id))
+                return true;
+            return false;
+                
         }
 
-        public async Task<List<Appointment>> GetAllAppointment()
+        public async Task<List<AppointmentDetailDto>> GetAllAppointment()
         {
             return await _appointment.GetAllAppointment();
         }
 
-        public async Task<Appointment> GetAppointmentById(int id)
+        public async Task<AppointmentDetailDto> GetAppointmentById(int id)
         {
           return await _appointment.GetAppointmentById(id);
         }
 
-        public async Task UpdateAppointment(Appointment appointment)
+        public async Task<bool> UpdateAppointment(Appointment appointment,int id)
         {
-            await _appointment.UpdateAppointment(appointment);
-        }
+            
+            if (await _appointment.UpdateAppointment(appointment,id))
+                return true;
+
+            return false;
+
+                }
     }
 }
