@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data_Accese_Layer.Repos
+namespace Data_Accese_Layer.IRepos
 {
     public interface IAppointmentRepository
     {

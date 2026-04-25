@@ -14,7 +14,9 @@ namespace Api_Layer
             builder.Services.AddDataAccessServices(connstring);
             builder.Services.AddBusinessServices();
 
-
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            
+            
             builder.Services.AddControllers()
                 .AddJsonOptions(options => {
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;

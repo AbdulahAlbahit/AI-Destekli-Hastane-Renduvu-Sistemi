@@ -1,6 +1,6 @@
 ﻿using Data_Accese_Layer.Dto;
 using Data_Accese_Layer.Entities;
-using Data_Accese_Layer.Repos;
+using Data_Accese_Layer.IRepos;
 using System;
 using System.Collections.Generic;
 using System.Text;
