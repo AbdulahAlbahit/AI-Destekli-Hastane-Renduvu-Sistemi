@@ -2,18 +2,19 @@
 using Business_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Data_Accese_Layer.Dto;
 
 namespace Api_Layer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AppointmentController:ControllerBase
+    public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
 
         public AppointmentController(IAppointmentService appointmentService)
         {
-            _appointmentService=appointmentService;
+            _appointmentService = appointmentService;
         }
 
 
@@ -31,14 +32,12 @@ namespace Api_Layer.Controllers
                 var app = new Appointment()
                 {
                     TheStatus = appointment.TheStatus,
-                    TheDate=appointment.TheDate,
-                    TheTime=appointment.TheTime,
+                    TheDate = appointment.TheDate,
+                    TheTime = appointment.TheTime,
                     ClinicId = appointment.ClinicId,
                     DoctorId = appointment.DoctorId,
                     PatientId = appointment.PatientId,
-                    Doctor=null,
-                    Clinic=null,
-                    Patient=null
+
                 };
 
                 await _appointmentService.AddAppointment(app);
@@ -49,11 +48,58 @@ namespace Api_Layer.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Appointment>>> GetAllAppointment()
+        public async Task<ActionResult<List<AppointmentDetailDto>>> GetAllAppointment()
         {
-            return await _appointmentService.GetAllAppointment();
+            var list = await _appointmentService.GetAllAppointment();
+            if(list == null)
+            {
+                return NotFound ("Appointment bulunmadi");
+            }
+            return Ok(list);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<AppointmentDetailDto>> GetAppointment(int id) { 
+        var app=await _appointmentService.GetAppointmentById(id);
+            if (app == null)
+                return NotFound("Bu id ye sahip bir Appointment bulunmadi");
+
+            return Ok(app);
+        
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAppointment(int appointmentId)
+        {
+            if (await _appointmentService.DeleteAppointment(appointmentId))
+                return Ok("Appointment silindi");
+
+            return NotFound("Appointment bulunmadi");
+
+
+           
+        }
+
+        [HttpPut]
+        public async Task<ActionResult>   UpdateAppointment(AppointmentCreateDto appointment,int id)
+        {
+            var app = new Appointment()
+            {
+                TheDate=appointment.TheDate,
+                TheStatus=appointment.TheStatus,
+                TheTime=appointment.TheTime,
+                ClinicId=appointment.ClinicId,
+                DoctorId=appointment.DoctorId,
+                PatientId=appointment.PatientId,
+            };
+
+
+            if (await _appointmentService.UpdateAppointment(app,id))
+                return Ok();
+
+            return NotFound("Appointment bulunmadi ");
+        }
 
 
 
