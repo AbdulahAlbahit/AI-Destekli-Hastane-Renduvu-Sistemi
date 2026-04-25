@@ -10,7 +10,7 @@ namespace Business_Layer
             {
                 // Business katmanındaki tüm servisleri burada kaydediyoruz
                 services.AddScoped<IAppointmentService, AppointmentService>();
-
+                services.AddScoped<IDoctorServices, DoctorServices>();
                 // Yarın öbür gün DoktorService, PatientService gelirse onları da buraya eklersin:
                 // services.AddScoped<IDoctorService, DoctorService>();
 

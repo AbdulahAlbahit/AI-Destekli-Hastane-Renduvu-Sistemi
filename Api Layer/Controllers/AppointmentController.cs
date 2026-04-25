@@ -3,6 +3,7 @@ using Business_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Data_Accese_Layer.Dto;
+using AutoMapper;
 
 namespace Api_Layer.Controllers
 {
@@ -11,10 +12,12 @@ namespace Api_Layer.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IMapper _mapper;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService,IMapper mapper)
         {
             _appointmentService = appointmentService;
+            _mapper=mapper;
         }
 
 
@@ -23,22 +26,12 @@ namespace Api_Layer.Controllers
         {
 
 
-
-
             if (appointment == null)
                 return BadRequest("appointment bos olamaz");
             else
             {
-                var app = new Appointment()
-                {
-                    TheStatus = appointment.TheStatus,
-                    TheDate = appointment.TheDate,
-                    TheTime = appointment.TheTime,
-                    ClinicId = appointment.ClinicId,
-                    DoctorId = appointment.DoctorId,
-                    PatientId = appointment.PatientId,
-
-                };
+                
+                var app=_mapper.Map<Appointment>(appointment);
 
                 await _appointmentService.AddAppointment(app);
             }
@@ -84,16 +77,16 @@ namespace Api_Layer.Controllers
         [HttpPut]
         public async Task<ActionResult>   UpdateAppointment(AppointmentCreateDto appointment,int id)
         {
-            var app = new Appointment()
-            {
-                TheDate=appointment.TheDate,
-                TheStatus=appointment.TheStatus,
-                TheTime=appointment.TheTime,
-                ClinicId=appointment.ClinicId,
-                DoctorId=appointment.DoctorId,
-                PatientId=appointment.PatientId,
-            };
-
+            //var app = new Appointment()
+            //{
+            //    TheDate=appointment.TheDate,
+            //    TheStatus=appointment.TheStatus,
+            //    TheTime=appointment.TheTime,
+            //    ClinicId=appointment.ClinicId,
+            //    DoctorId=appointment.DoctorId,
+            //    PatientId=appointment.PatientId,
+            //};
+            var app=_mapper.Map<Appointment>(appointment);
 
             if (await _appointmentService.UpdateAppointment(app,id))
                 return Ok();

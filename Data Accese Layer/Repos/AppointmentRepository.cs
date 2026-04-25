@@ -4,39 +4,40 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AutoMapper;
+using Data_Accese_Layer.IRepos;
 
 namespace Data_Accese_Layer.Repos
 {
     public  class AppointmentRepository:IAppointmentRepository
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AppointmentRepository(AppDbContext context)
+        public AppointmentRepository(AppDbContext context,IMapper mapper)
         {
                 _context   = context;
+            _mapper=mapper;
         }
         public async Task<List<AppointmentDetailDto>> GetAllAppointment()
         {
             return await _context.Appointments.Select(a => new AppointmentDetailDto
             {
-             AppointmentId=a.AppointmentId,
-              ClinicNum=a.Clinic.ClinicNumber,
-             DepName=a.Clinic.Dept.DeptName,
-             DoctorName=a.Doctor.DoctorName,
-             PatientName=a.Patient.PatientName,
-             PatientGender=a.Patient.Gender,
-             PatientPhone=a.Patient.Phone,
-             TheDate=a.TheDate,
-             TheStatus=a.TheStatus,
-             TheTime=a.TheTime
+                AppointmentId = a.AppointmentId,
+                ClinicNum = a.Clinic.ClinicNumber,
+                DepName = a.Clinic.Dept.DeptName,
+                DoctorName = a.Doctor.DoctorName,
+                PatientName = a.Patient.PatientName,
+                PatientGender = a.Patient.Gender,
+                PatientPhone = a.Patient.Phone,
+                TheDate = a.TheDate,
+                TheStatus = a.TheStatus,
+                TheTime = a.TheTime
 
             }).ToListAsync();
-              
-                ;
-           
-            
-            
-            
+
+            ;
+
         }
 
         public async Task<AppointmentDetailDto> GetAppointmentById(int id)
