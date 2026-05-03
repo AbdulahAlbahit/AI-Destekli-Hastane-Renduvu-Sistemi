@@ -13,7 +13,7 @@ namespace Data_Accese_Layer.Repos
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-
+        
         public AppointmentRepository(AppDbContext context,IMapper mapper)
         {
                 _context   = context;
