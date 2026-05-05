@@ -10,18 +10,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Data_Accese_Layer.Repos
 {
-    public  class AppointmentRepository:IAppointmentRepository
+    public class AppointmentRepository : IAppointmentRepository
     {
         private readonly AppDbContext _context;
-<<<<<<< HEAD
+
+     
 
         public AppointmentRepository(AppDbContext context)
-=======
-        private readonly IMapper _mapper;
-        
-        public AppointmentRepository(AppDbContext context,IMapper mapper)
->>>>>>> d4330fffd19789c1fe3e112022fa1abb4676dd44
-        {
+        { 
                 _context   = context;
           
         }
