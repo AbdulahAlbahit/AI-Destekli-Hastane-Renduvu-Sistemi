@@ -1,4 +1,5 @@
-﻿using Data_Accese_Layer.Dto;
+﻿using Business_Layer.IServices;
+using Data_Accese_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Data_Accese_Layer.IRepos;
 using System;
@@ -10,7 +11,7 @@ namespace Business_Layer.Services
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository _appointment;
-
+        private  const int sinir=10;
         public AppointmentService(IAppointmentRepository appointment)
         {
             _appointment = appointment;
@@ -52,5 +53,27 @@ namespace Business_Layer.Services
             return false;
 
                 }
+
+
+
+        public async Task<bool> isThisDateavailable(DateOnly time,TimeOnly saat)
+        {
+            var dates = await _appointment.GetTheDates(time);
+
+            foreach (var item in dates)
+            {
+                TimeOnly start = new TimeOnly(saat.Hour, saat.Minute);
+                TimeOnly end = new TimeOnly(item.TheTime.Hour, item.TheTime.Minute);
+                TimeSpan fark = end - start;
+                if (Math.Abs(fark.TotalMinutes) < sinir)
+                    return false;
+            }
+            return true;
+        }
+        
+
+        
+
+
     }
 }

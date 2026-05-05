@@ -15,6 +15,7 @@ namespace Data_Accese_Layer.Dto
         public string Phone { get; set; } = null!;
 
         public string? Email { get; set; }
+        public   int ClinicId {  get; set; }
         public int ClinicNumber { get; set; }
         public string DepName { get; set; }
 

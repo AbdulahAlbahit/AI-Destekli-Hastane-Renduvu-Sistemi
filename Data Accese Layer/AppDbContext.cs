@@ -26,8 +26,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Patient> Patients { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(SqlCon.con);
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseSqlServer(SqlCon.con);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

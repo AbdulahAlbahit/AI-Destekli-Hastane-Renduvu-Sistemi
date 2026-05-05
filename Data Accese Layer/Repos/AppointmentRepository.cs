@@ -4,20 +4,20 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using AutoMapper;
+
 using Data_Accese_Layer.IRepos;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Data_Accese_Layer.Repos
 {
     public  class AppointmentRepository:IAppointmentRepository
     {
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
 
-        public AppointmentRepository(AppDbContext context,IMapper mapper)
+        public AppointmentRepository(AppDbContext context)
         {
                 _context   = context;
-            _mapper=mapper;
+          
         }
         public async Task<List<AppointmentDetailDto>> GetAllAppointment()
         {
@@ -108,6 +108,18 @@ namespace Data_Accese_Layer.Repos
             }
             return false;
 
+        }
+
+        public async Task<List<TheAppointmentTimes>> GetTheDates(DateOnly time)
+        {
+            var dates = await _context.Appointments.Where(a => a.TheDate.Equals(time)).Select(a => new TheAppointmentTimes
+            {
+                AppointmentId = a.AppointmentId,
+                TheDate = a.TheDate,
+                TheTime = a.TheTime
+
+            }).ToListAsync();
+            return dates;
         }
     }
 }

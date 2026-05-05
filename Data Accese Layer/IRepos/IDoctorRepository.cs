@@ -6,7 +6,7 @@ namespace Data_Accese_Layer.IRepos
 
         Task<List<DoctorDetailDto>> GetAllDoctorsAsyncc();
         Task<DoctorDetailDto> GetDoctorByIdAsync(int id);
-       
+        public Task<List<DoctorDetailDto>> GetDoctorbyClinicIdAsync(int ClinicId);
 
 
 

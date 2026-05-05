@@ -19,6 +19,7 @@ namespace Data_Accese_Layer
                 // Repository'leri de burada kayıt edebilirsin
                 services.AddScoped<IAppointmentRepository, AppointmentRepository>();
                 services.AddScoped<IDoctorRepository, DoctorRepository>();
+                services.AddScoped<IClinicRepository, ClinicRepository>();
                 return services;
             }
         

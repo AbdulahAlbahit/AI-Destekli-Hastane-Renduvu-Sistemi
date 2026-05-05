@@ -8,7 +8,7 @@ public partial class Clinic
     public int ClinicId { get; set; }
 
     public int ClinicNumber { get; set; }
-
+ 
     public int? DeptId { get; set; }
 
     public int? DoctorId { get; set; }

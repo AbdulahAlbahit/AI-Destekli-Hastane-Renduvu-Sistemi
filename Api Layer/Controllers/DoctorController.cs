@@ -1,4 +1,4 @@
-﻿using Business_Layer.Services;
+﻿using Business_Layer.IServices;
 using Data_Accese_Layer.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +26,7 @@ namespace Api_Layer.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("iD:{id}")]
         public async Task<ActionResult<DoctorDetailDto>> GetDoctorByIdAsync(int id)
         {
             var item = await _doctorServices.GetDoctorByIdAsync(id);
@@ -37,5 +37,16 @@ namespace Api_Layer.Controllers
             return Ok(item);
         }
 
+
+        [HttpGet]
+        [Route("ClinicId:{ClinicId}")]
+        public async Task<ActionResult<List<DoctorDetailDto>>> GetDoctorByClinicId(int ClinicId)
+        {
+            var Doctors=await _doctorServices.GetDoctorbyClinicIdAsync(ClinicId);
+            if (Doctors == null)
+                return NotFound("bu klinikte doctor bulunmadi");
+
+            return Ok(Doctors);
+        }
     }
 }

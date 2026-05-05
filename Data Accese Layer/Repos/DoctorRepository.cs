@@ -57,5 +57,33 @@ namespace Data_Accese_Layer.Repos
             return null;
             
         }
+
+
+
+        public async Task<List<DoctorDetailDto>> GetDoctorbyClinicIdAsync(int ClinicId) {
+
+            var doctors = await _context.Doctors.Where(a => a.ClinicId == ClinicId).Select(
+                a => new DoctorDetailDto
+                {
+                    DoctorId = a.DoctorId,
+                    DoctorName = a.DoctorName,
+                    Specialization = a.Specialization,
+                    ClinicNumber = a.Clinic.ClinicNumber,
+                    DepName = a.Clinic.Dept.DeptName,
+                    Email = a.Email,
+                    Phone = a.Phone,
+                    ClinicId=ClinicId
+                }
+                ).ToListAsync() ;
+
+            return doctors;
+        
+        }
+
+
+
+
+
+
     }
 }
