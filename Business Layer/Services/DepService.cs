@@ -6,12 +6,13 @@ using System.Text;
 using Data_Accese_Layer.Dto;
 using Microsoft.EntityFrameworkCore;
 using Data_Accese_Layer.IRepos;
+using Business_Layer.IServices;
 namespace Business_Layer.Services
 {
-    internal class DepService
+    public class DepService:IDepService
+
     {
-        public DepService() { }
-       
+     
         private readonly IDepRepo _deprepo;
 
         public DepService(IDepRepo depRepo)
@@ -21,13 +22,9 @@ namespace Business_Layer.Services
 
         public async Task<List<DeptDetailDto>> GetAllDepartmentsAsync()
         {
-            // اكتب الكود هنا كما فعلنا سابقاً
+           
             return await _deprepo.GetAllDepartmentsAsync();
-                //.Select(d => new DeptDetailDto
-                //{
-                //    DeptId = d.DeptId,
-                //    DeptName = d.DeptName
-                //}).ToListAsync();
+                
         }
     }
 }

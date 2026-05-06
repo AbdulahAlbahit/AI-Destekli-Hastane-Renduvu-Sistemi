@@ -17,6 +17,7 @@ public partial class AppDbContext : DbContext
     }
 
     public virtual DbSet<Appointment> Appointments { get; set; }
+    public virtual DbSet<Users> Users { get; set; }
 
     public virtual DbSet<Clinic> Clinics { get; set; }
 
@@ -26,13 +27,18 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Patient> Patients { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(SqlCon.con);
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseSqlServer(SqlCon.con);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Patient>().HasOne(c => c.User).WithOne(c => c.Patient)
+            .HasForeignKey<Patient>(c => c.UserId);
+
+
         modelBuilder.Entity<Appointment>(entity =>
         {
+
             entity.HasKey(e => e.AppointmentId).HasName("PK__APPOINTM__49B308C65E500E5D");
 
             entity.ToTable("APPOINTMENTS", "HOSPITAL_SYSTEM");

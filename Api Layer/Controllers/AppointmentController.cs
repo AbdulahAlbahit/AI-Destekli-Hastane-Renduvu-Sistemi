@@ -1,9 +1,9 @@
-﻿using Business_Layer.Services;
-using Business_Layer.Dto;
+﻿using Business_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Data_Accese_Layer.Dto;
 using AutoMapper;
+using Business_Layer.IServices;
 
 namespace Api_Layer.Controllers
 {
@@ -62,6 +62,24 @@ namespace Api_Layer.Controllers
         
         }
 
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<ActionResult<AppointmentDetailDto>> GetAppointmentByUserId(int userId)
+        {
+            var app=await _appointmentService.GetAppointmentByUserId(userId);
+
+            if(app == null)
+            {
+                return NotFound("Randevu bulunmadi");
+
+            }
+
+            return Ok(app);
+
+
+        }
+
+
         [HttpDelete]
         public async Task<ActionResult> DeleteAppointment(int appointmentId)
         {
@@ -77,15 +95,7 @@ namespace Api_Layer.Controllers
         [HttpPut]
         public async Task<ActionResult>   UpdateAppointment(AppointmentCreateDto appointment,int id)
         {
-            //var app = new Appointment()
-            //{
-            //    TheDate=appointment.TheDate,
-            //    TheStatus=appointment.TheStatus,
-            //    TheTime=appointment.TheTime,
-            //    ClinicId=appointment.ClinicId,
-            //    DoctorId=appointment.DoctorId,
-            //    PatientId=appointment.PatientId,
-            //};
+            
             var app=_mapper.Map<Appointment>(appointment);
 
             if (await _appointmentService.UpdateAppointment(app,id))
@@ -94,6 +104,16 @@ namespace Api_Layer.Controllers
             return NotFound("Appointment bulunmadi ");
         }
 
+        [HttpGet]
+        [Route("zamanMakinizma/{time}/{saat}")]
+        public async Task<ActionResult<bool>> isThisDateavailable(DateOnly time, TimeOnly saat)
+        {
+            var musaitMi=await _appointmentService.isThisDateavailable(time, saat) ;
+            if (musaitMi)
+                return Ok(true) ;
+
+            return BadRequest(false);
+        }
 
 
     }

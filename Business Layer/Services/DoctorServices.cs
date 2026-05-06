@@ -1,4 +1,5 @@
-﻿using Data_Accese_Layer.Dto;
+﻿using Business_Layer.IServices;
+using Data_Accese_Layer.Dto;
 using Data_Accese_Layer.IRepos;
 using Data_Accese_Layer.Repos;
 using System;
@@ -21,10 +22,16 @@ namespace Business_Layer.Services
            return await _doctorRepository.GetAllDoctorsAsyncc();
         }
 
+        public async Task<List<DoctorDetailDto>> GetDoctorbyClinicIdAsync(int ClinicId)
+        {
+            return await _doctorRepository.GetDoctorbyClinicIdAsync(ClinicId);
+        }
+
         public async Task<DoctorDetailDto> GetDoctorByIdAsync(int id)
         {
             return await _doctorRepository.GetDoctorByIdAsync(id);
         }
+
 
 
 

@@ -1,4 +1,5 @@
-﻿using Data_Accese_Layer.IRepos;
+﻿using Data_Accese_Layer.Dto;
+using Data_Accese_Layer.IRepos;
 using Data_Accese_Layer.Repos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,11 @@ namespace Data_Accese_Layer
                 // Repository'leri de burada kayıt edebilirsin
                 services.AddScoped<IAppointmentRepository, AppointmentRepository>();
                 services.AddScoped<IDoctorRepository, DoctorRepository>();
+                services.AddScoped<IClinicRepository, ClinicRepository>();
+                services.AddScoped<IDepRepo,DepRepo>();
+                services.AddScoped<IPatientRepo,PatientRepo>();
+                services.AddScoped<IUserRepo,UserRepo>();
+
                 return services;
             }
         

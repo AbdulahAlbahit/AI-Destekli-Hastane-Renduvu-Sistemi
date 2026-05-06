@@ -2,6 +2,7 @@ using Business_Layer;
 using Business_Layer.Services;
 using Data_Accese_Layer;
 using Data_Accese_Layer.Entities;
+using Microsoft.Extensions.Options;
 namespace Api_Layer
 {
     public class Program
@@ -27,6 +28,15 @@ namespace Api_Layer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
+
+            //.AddJsonOptions(
+            //    options =>
+            //    {
+
+
+            //        options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+            //        options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+            //    }
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
