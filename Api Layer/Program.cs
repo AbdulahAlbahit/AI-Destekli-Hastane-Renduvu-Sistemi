@@ -1,15 +1,19 @@
+using Api_Layer.topla;
 using Business_Layer;
 using Business_Layer.Services;
 using Data_Accese_Layer;
 using Data_Accese_Layer.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 namespace Api_Layer
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-          //  Class1 c = new Class1();
+       
             var builder = WebApplication.CreateBuilder(args);
             var connstring = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDataAccessServices(connstring);
@@ -24,6 +28,28 @@ namespace Api_Layer
                             });
 
 
+            var Jwtoption=builder.Configuration.GetSection("Jwt").Get<JwtOptions>();
+            builder.Services.AddSingleton(Jwtoption);
+
+
+
+            builder.Services.AddAuthentication().
+                AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = Jwtoption.Issuer,
+                        ValidateAudience =true,
+                        ValidAudience = Jwtoption.Audience,
+                        ValidateLifetime=true,
+                         RequireExpirationTime =true,
+                         ValidateIssuerSigningKey=true,
+                         IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwtoption.SigningKey))
+
+                    };
+                });
             // Add services to the container.
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

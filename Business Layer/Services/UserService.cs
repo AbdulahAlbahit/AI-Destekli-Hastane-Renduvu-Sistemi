@@ -20,5 +20,9 @@ namespace Business_Layer.Services
             return await _repo.AddUser(user);
         }
 
+        public async Task<Users> CheckUser(Users user)
+        {
+            return await _repo.CheckUser(user);
+        }
     }
 }

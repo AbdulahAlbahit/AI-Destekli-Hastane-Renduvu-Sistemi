@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Data_Accese_Layer.Dto;
 using AutoMapper;
 using Business_Layer.IServices;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api_Layer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
@@ -41,6 +44,8 @@ namespace Api_Layer.Controllers
 
 
         [HttpGet]
+        [Route("GetAllAppointment")]
+       
         public async Task<ActionResult<List<AppointmentDetailDto>>> GetAllAppointment()
         {
             var list = await _appointmentService.GetAllAppointment();
@@ -63,10 +68,12 @@ namespace Api_Layer.Controllers
         }
 
         [HttpGet]
-        [Route("{userId}")]
-        public async Task<ActionResult<AppointmentDetailDto>> GetAppointmentByUserId(int userId)
+        [Route("")]
+        public async Task<ActionResult<AppointmentDetailDto>> GetAppointmenForAuthenticatUser()
         {
-            var app=await _appointmentService.GetAppointmentByUserId(userId);
+            var userid = int.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+               
+            var app=await _appointmentService.GetAppointmentByUserId(userid);
 
             if(app == null)
             {

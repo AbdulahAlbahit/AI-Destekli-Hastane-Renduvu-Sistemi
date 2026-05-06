@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Data_Accese_Layer.Entities;
 using Data_Accese_Layer.IRepos;
+using Microsoft.EntityFrameworkCore;
 namespace Data_Accese_Layer.Repos
 {
     public class UserRepo:IUserRepo
@@ -30,7 +31,13 @@ namespace Data_Accese_Layer.Repos
         }
 
 
+        public async Task<Users> CheckUser(Users user)
+        {
+            var User=await _context.Users.FirstOrDefaultAsync(c=>c.TC==user.TC&&c.Password==user.Password);
 
+
+            return User;
+        }
 
 
     }
