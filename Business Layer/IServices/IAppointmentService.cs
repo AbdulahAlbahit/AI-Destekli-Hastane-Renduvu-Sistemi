@@ -11,5 +11,6 @@ namespace Business_Layer.IServices
         Task<bool> UpdateAppointment(Appointment appointment,int id);
         Task<bool> DeleteAppointment(int id);
         public Task<bool> isThisDateavailable(DateOnly time, TimeOnly saat);
+        Task<AppointmentDetailDto> GetAppointmentByUserId(int userId);
     }
 }

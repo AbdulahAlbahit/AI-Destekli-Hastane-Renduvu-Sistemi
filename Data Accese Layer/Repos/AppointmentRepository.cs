@@ -93,6 +93,29 @@ namespace Data_Accese_Layer.Repos
 
         }
 
+
+        public async Task <AppointmentDetailDto> GetAppointmentByUserId(int userId)
+        {
+            var app = await _context.Appointments.Where(a => a.PatientId == userId).Select(a => new AppointmentDetailDto
+            {
+
+                AppointmentId = a.AppointmentId,
+                TheDate = a.TheDate,
+                TheTime = a.TheTime,
+                TheStatus = a.TheStatus,
+                DoctorName = a.Doctor.DoctorName,
+                ClinicNum = a.Clinic.ClinicNumber,
+                DepName = a.Clinic.Dept.DeptName,
+                PatientName = a.Patient.PatientName,
+                PatientGender = a.Patient.Gender,
+                PatientPhone = a.Patient.Phone,
+
+            }).FirstOrDefaultAsync();
+
+            return app;
+
+        }
+
      
         public async Task<bool>  UpdateAppointment(Appointment appointment, int id  )
         {
@@ -123,5 +146,14 @@ namespace Data_Accese_Layer.Repos
             }).ToListAsync();
             return dates;
         }
+
+
+
+
+
+
+
+
+
     }
 }

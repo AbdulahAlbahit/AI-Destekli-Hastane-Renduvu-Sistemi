@@ -6,7 +6,7 @@ namespace Data_Accese_Layer.Dto
 {
     public class DeptDetailDto
     {
-        public int DeptId { get; set; }        // معرف القسم
+        public int DeptId { get; set; }       
         public string DeptName { get; set; }
     }
 }

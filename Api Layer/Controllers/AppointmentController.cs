@@ -62,6 +62,24 @@ namespace Api_Layer.Controllers
         
         }
 
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<ActionResult<AppointmentDetailDto>> GetAppointmentByUserId(int userId)
+        {
+            var app=await _appointmentService.GetAppointmentByUserId(userId);
+
+            if(app == null)
+            {
+                return NotFound("Randevu bulunmadi");
+
+            }
+
+            return Ok(app);
+
+
+        }
+
+
         [HttpDelete]
         public async Task<ActionResult> DeleteAppointment(int appointmentId)
         {

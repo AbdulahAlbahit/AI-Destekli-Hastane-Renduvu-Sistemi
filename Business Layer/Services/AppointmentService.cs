@@ -44,6 +44,11 @@ namespace Business_Layer.Services
           return await _appointment.GetAppointmentById(id);
         }
 
+        public async Task<AppointmentDetailDto> GetAppointmentByUserId(int userId)
+        {
+            return await _appointment.GetAppointmentByUserId(userId);
+
+        }
         public async Task<bool> UpdateAppointment(Appointment appointment,int id)
         {
             
@@ -70,10 +75,7 @@ namespace Business_Layer.Services
             }
             return true;
         }
-        
 
-        
-
-
+       
     }
 }

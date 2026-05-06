@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data_Accese_Layer.Entities;
 
@@ -14,6 +16,8 @@ public partial class Patient
     public string Gender { get; set; } = null!;
 
     public string? Phone { get; set; }
-
+    [ForeignKey("User")]
+    public int UserId { get; set; }
+    public virtual Users User { get; set; }
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }
