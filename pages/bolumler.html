@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bölümler — Hastane Sistemi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/stil.css">
+  <style>
+    /* ===== PAGE HEADER ===== */
+    .page-hero {
+      padding: 110px 24px 48px;
+      background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 40%, #f5f3ff 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .page-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #ede9fe, #dbeafe);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 7px 18px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(99,102,241,0.2);
+      animation: fadeDown 0.5s ease both;
+    }
+    .page-hero h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .page-hero p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+
+    /* ===== SEARCH BAR ===== */
+    .search-wrap {
+      max-width: 480px;
+      margin: 28px auto 0;
+      position: relative;
+      animation: fadeUp 0.6s ease 0.3s both;
+    }
+    .search-wrap input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: white;
+      color: var(--text);
+      outline: none;
+      transition: var(--transition);
+      box-shadow: 0 2px 12px rgba(37,99,235,0.06);
+    }
+    .search-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+    .search-wrap .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    /* ===== BOLUM SECTION ===== */
+    .bolumler-section {
+      padding: 56px 24px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    /* ===== BOLUM CARDS GRID ===== */
+    .bolumler-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .bolum-item {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 20px 26px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+    .bolum-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      opacity: 0;
+      transition: var(--transition);
+      border-radius: 18px;
+    }
+    .bolum-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(37,99,235,0.16);
+    }
+    .bolum-item:hover::before { opacity: 0.05; }
+    .bolum-item:hover .bolum-item-icon { transform: scale(1.15); }
+    .bolum-item:hover .bolum-item-btn {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .bolum-item-icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      z-index: 1;
+    }
+    .bolum-item h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+    .bolum-item .doctor-count {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .bolum-item-btn {
+      display: inline-block;
+      padding: 8px 20px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      transition: var(--transition);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Loading skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 20px;
+      height: 190px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* No results */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+    }
+    .no-results .no-icon { font-size: 3rem; margin-bottom: 12px; }
+    .no-results h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .no-results p { font-size: 0.9rem; }
+
+    /* Error state */
+    .error-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .error-state .error-icon { font-size: 3rem; margin-bottom: 12px; }
+    .error-state h4 { font-size: 1rem; font-weight: 700; color: var(--danger); margin-bottom: 8px; }
+    .error-state p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 18px; }
+    .btn-retry {
+      padding: 10px 24px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .btn-retry:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+    @media (max-width: 640px) {
+      .bolumler-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .bolum-item { padding: 24px 14px 20px; }
+    }
+    @media (max-width: 380px) {
+      .bolumler-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========================= -->
+<!-- 🔵 Navbar -->
+<!-- ========================= -->
+<nav class="navbar" id="navbar">
+  <h2><a href="../index.html" style="text-decoration:none;color:inherit;">🏥 Hastane</a></h2>
+  <div class="navbar-links" id="navLinks"></div>
+</nav>
+
+<!-- ========================= -->
+<!-- 🦸 Page Hero -->
+<!-- ========================= -->
+<div class="page-hero">
+  <div class="page-hero-badge"> Uzman Ekibimiz</div>
+  <h1>Tüm <span style="color:var(--primary)">Bölümlerimiz</span></h1>
+  <p>İhtiyacınıza uygun bölümü seçin, uzman doktorlarımızdan randevu alın.</p>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Bölüm ara... (Kardiyoloji, Dahiliye...)" oninput="filterBolumler()">
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 📦 Bolumler Grid -->
+<!-- ========================= -->
+<div class="bolumler-section">
+  <p class="section-label" id="sectionLabel">Tüm Bölümler</p>
+  <div class="bolumler-grid" id="bolumlerGrid">
+    <!-- Skeleton loading -->
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+    <div class="skeleton"></div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- 📜 Scripts -->
+<!-- ========================= -->
+<script src="../js/api.js"></script>
+<script>
+// ============================================
+// Bölüm icon & doctor count mapping
+// (Fallback for display — real data comes from API)
+// ============================================
+const bolumMeta = {
+  "Kardiyoloji":       { icon: "❤️",  desc: "Kalp ve damar hastalıkları" },
+  "Dahiliye":          { icon: "🩺",  desc: "İç hastalıkları" },
+  "Ortopedi":          { icon: "🦴",  desc: "Kemik ve eklem hastalıkları" },
+  "Göz Hastalıkları":  { icon: "👁️",  desc: "Göz muayene ve tedavi" },
+  "Dermatoloji":       { icon: "🧴",  desc: "Cilt ve deri hastalıkları" },
+  "Nöroloji":          { icon: "🧠",  desc: "Sinir sistemi hastalıkları" },
+  "Psikiyatri":        { icon: "💬",  desc: "Ruh sağlığı ve tedavi" },
+  "Pediatri":          { icon: "👶",  desc: "Çocuk hastalıkları" },
+  "Jinekoloji":        { icon: "🌸",  desc: "Kadın sağlığı" },
+  "Üroloji":           { icon: "💊",  desc: "İdrar yolu hastalıkları" },
+  "Kulak Burun Boğaz": { icon: "👂",  desc: "KBB hastalıkları" },
+  "Genel Cerrahi":     { icon: "🔬",  desc: "Cerrahi operasyonlar" },
+};
+
+const defaultMeta = { icon: "🏥", desc: "Uzman doktorlar" };
+
+// ============================================
+// State
+// ============================================
+let allBolumler = [];
+
+// ============================================
+// Render Cards
+// ============================================
+function renderBolumler(list) {
+  const grid = document.getElementById("bolumlerGrid");
+  const label = document.getElementById("sectionLabel");
+
+  if (list.length === 0) {
+    label.textContent = "Sonuç bulunamadı";
+    grid.innerHTML = `
+      <div class="no-results">
+        <div class="no-icon">🔍</div>
+        <h4>Bölüm bulunamadı</h4>
+        <p>Farklı bir arama terimi deneyin.</p>
+      </div>`;
+    return;
+  }
+
+  label.textContent = `${list.length} Bölüm`;
+
+  grid.innerHTML = list.map((bolum, i) => {
+    const name = bolum.name || bolum.Name || bolum.bolumAdi || bolum;
+    const id   = bolum.id   || bolum.Id   || name;
+    const meta = bolumMeta[name] || defaultMeta;
+    const doctorCount = bolum.doctorCount || bolum.doktorSayisi || "";
+
+    return `
+      <div class="bolum-item" style="animation-delay:${i * 0.06}s" onclick="secBolum('${id}', '${name}')">
+        <span class="bolum-item-icon">${meta.icon}</span>
+        <h3>${name}</h3>
+        <p class="doctor-count">${doctorCount ? `${doctorCount} Doktor` : meta.desc}</p>
+        <span class="bolum-item-btn">Doktorları Gör →</span>
+      </div>
+    `;
+  }).join("");
+}
+
+// ============================================
+// Filter
+// ============================================
+function filterBolumler() {
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  const filtered = allBolumler.filter(b => {
+    const name = (b.name || b.Name || b.bolumAdi || b).toString().toLowerCase();
+    return name.includes(q);
+  });
+  renderBolumler(filtered);
+}
+
+// ============================================
+// Load from API
+// ============================================
+async function loadBolumler() {
+  try {
+    const data = await DoktorAPI.getBolumler();
+    allBolumler = data;
+    renderBolumler(allBolumler);
+  } catch (err) {
+    console.warn("API hatası, statik veri kullanılıyor:", err);
+
+    // Fallback static data
+    allBolumler = Object.keys(bolumMeta).map((name, i) => ({ id: i + 1, name }));
+    renderBolumler(allBolumler);
+  }
+}
+
+// ============================================
+// Select Department → go to doktorlar.html
+// ============================================
+function secBolum(id, name) {
+  localStorage.setItem("selectedBolumId",   id);
+  localStorage.setItem("selectedBolumName", name);
+  window.location.href = "doktorlar.html";
+}
+
+// ============================================
+// Navbar scroll effect
+// ============================================
+window.addEventListener("scroll", () => {
+  document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 20);
+});
+
+// ============================================
+// Init
+// ============================================
+buildNavbar('bolumler');
+loadBolumler();
+</script>
+
+</body>
+</html>

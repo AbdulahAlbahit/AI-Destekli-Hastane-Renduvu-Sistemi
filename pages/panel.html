@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Yönetim Paneli</title>
+
+  <link rel="stylesheet" href="../css/panel.css">
+
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <h2>Hastane Paneli</h2>
+
+    <ul>
+
+      <li onclick="showSection('dashboardSection')">
+        Gösterge Paneli
+      </li>
+
+      <li onclick="showSection('usersSection')">
+        Kullanıcılar
+      </li>
+
+      <li onclick="showSection('doctorsSection')">
+        Doktorlar
+      </li>
+
+      <li onclick="showSection('appointmentsSection')">
+        Randevular
+      </li>
+      <li onclick="showSection('departmentsSection')">
+  Bölümler
+</li>
+
+      <li onclick="logout()">
+        Çıkış Yap
+      </li>
+
+    </ul>
+
+  </aside>
+
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+      <h1>Yönetim Paneli</h1>
+
+    </div>
+
+
+
+    <!-- DASHBOARD -->
+    <section id="dashboardSection" class="section">
+
+      <div class="cards">
+
+        <div class="card">
+
+          <h3>Toplam Kullanıcı</h3>
+
+          <p id="totalUsers">0</p>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h3>Toplam Doktor</h3>
+
+          <p id="totalDoctors">0</p>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <h3>Toplam Randevu</h3>
+
+          <p id="totalAppointments">0</p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- USERS -->
+    <section id="usersSection" class="section hidden">
+
+      <h2>Kullanıcı Listesi</h2>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+
+            <th>Ad Soyad</th>
+
+            <th>E-posta</th>
+
+            <th>İşlem</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="usersTable"></tbody>
+
+      </table>
+
+    </section>
+
+
+
+    <!-- DOCTORS -->
+<section id="doctorsSection" class="section hidden">
+
+  <h2>Doktor Yönetimi</h2>
+
+
+  <!-- ADD DOCTOR FORM -->
+  <div class="doctor-form">
+
+    <input
+      type="text"
+      id="doctorName"
+      placeholder="Doktor Adı"
+    >
+
+
+    <input
+      type="text"
+      id="doctorDepartment"
+      placeholder="Bölüm"
+    >
+
+
+    <button onclick="addDoctor()">
+      Doktor Ekle
+    </button>
+
+  </div>
+
+
+
+  <!-- DOCTORS TABLE -->
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>ID</th>
+
+        <th>Doktor</th>
+
+        <th>Bölüm</th>
+
+        <th>İşlem</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody id="doctorsTable"></tbody>
+
+  </table>
+
+</section>
+   
+
+
+    <!-- APPOINTMENTS -->
+    <section id="appointmentsSection" class="section hidden">
+
+      <h2>Randevu Listesi</h2>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Hasta</th>
+
+            <th>Doktor</th>
+
+            <th>Tarih</th>
+
+            <th>Durum</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="appointmentsTable"></tbody>
+
+      </table>
+
+    </section>
+
+    
+
+  </main>
+
+
+
+  <!-- JS FILES -->
+  <script src="../js/api.js"></script>
+
+  <script src="../js/panel.js"></script>
+
+</body>
+
+</html>

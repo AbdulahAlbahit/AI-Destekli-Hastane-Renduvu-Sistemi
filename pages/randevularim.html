@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Randevularım - Hastane Sistemi</title>
+  <link rel="stylesheet" href="../css/stil.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .randevularim-section {
+      min-height: 100vh;
+      padding: 120px 24px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .randevularim-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .randevularim-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .randevularim-header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* Loading / Empty State */
+    .state-box {
+      text-align: center;
+      padding: 64px 24px;
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 2px dashed var(--border);
+    }
+    .state-box .state-icon { font-size: 3rem; margin-bottom: 16px; }
+    .state-box h3 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .state-box p  { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
+
+    /* Appointment Card */
+    .apt-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: var(--card-shadow);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 16px;
+      transition: var(--transition);
+      animation: fadeUp 0.4s ease both;
+    }
+    .apt-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.12); }
+    .apt-card.cancelled { opacity: 0.5; pointer-events: none; }
+
+    .apt-info {}
+    .apt-no {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .apt-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .apt-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .apt-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .apt-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .status-upcoming  { background: #d1fae5; color: #065f46; }
+    .status-completed { background: #e0f2fe; color: #0369a1; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    .apt-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .btn-cancel {
+      background: none;
+      border: 1.5px solid var(--danger);
+      color: var(--danger);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-cancel:hover { background: var(--danger); color: white; }
+
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 7px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .apt-card { grid-template-columns: 1fr; }
+      .apt-actions { flex-direction: row; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar" id="navbar">
+    <h2><a href="../index.html" style="text-decoration:none;color:inherit;">🏥 Hastane Sistemi</a></h2>
+    <div class="navbar-links" id="navLinks"></div>
+  </div>
+
+  <div class="randevularim-section">
+
+    <div class="randevularim-header">
+      <div class="hero-badge" style="margin:0 auto 16px;">📋 Randevularım</div>
+      <h1>Randevularım</h1>
+      <p id="welcomeMsg">Yükleniyor...</p>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar" id="filterBar" style="display:none;">
+      <button class="filter-btn active" onclick="filterApts('all', this)">Tümü</button>
+      <button class="filter-btn" onclick="filterApts('upcoming', this)">✅ Yaklaşan</button>
+      <button class="filter-btn" onclick="filterApts('completed', this)">🔵 Geçmiş</button>
+      <button class="filter-btn" onclick="filterApts('cancelled', this)">❌ İptal</button>
+    </div>
+
+    <!-- Demo Notice -->
+    <div id="randevuDemoNotice" style="display:none;padding:12px 16px;background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;font-size:0.84rem;color:#92400e;font-weight:600;margin-bottom:16px;">
+      ⚠️ Demo mod: Backend bağlantısı sağlanamadı. Aşağıdaki veriler örnek verilerdir.
+    </div>
+
+    <!-- Content -->
+    <div id="aptContent">
+      <div class="state-box">
+        <div class="state-icon">⏳</div>
+        <h3>Randevularınız yükleniyor...</h3>
+        <p>Lütfen bekleyin</p>
+      </div>
+    </div>
+
+    <!-- New Appointment CTA -->
+    <div style="text-align:center;margin-top:36px;">
+      <button class="cta" onclick="window.location.href='randevu.html'">📅 Yeni Randevu Al</button>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-bottom">
+      <p>© 2026 <span>Hastane Sistemi</span> — Üniversite Proje Grubu</p>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script>
+    // Auth check
+    if (!AuthAPI.isLoggedIn()) {
+      window.location.href = 'giris.html';
+    }
+
+    // Navbar
+    buildNavbar('randevularim', true);
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30));
+
+    let allApts = [];
+
+    // ============================================================
+    // LOAD RANDEVULAR
+    // ============================================================
+    async function loadRandevular() {
+      const contentEl  = document.getElementById('aptContent');
+      const filterBar  = document.getElementById('filterBar');
+      const welcomeMsg = document.getElementById('welcomeMsg');
+      const userName   = localStorage.getItem('userName') || 'Kullanıcı';
+      let isDemo = false;
+
+      try {
+        // 🔌 BACKEND API çağrısı
+        allApts = await AppointmentAPI.getMine();
+
+        // Normalize fields (backend'e göre değişebilir)
+        allApts = allApts.map(a => ({
+          id:         a.id         || a.Id         || a.appointmentId || '',
+          doktor:     a.doctorName || a.doktor      || a.doctor        || '—',
+          bolum:      a.department || a.bolum       || a.departmentName|| '—',
+          tarih:      a.date       || a.tarih       || a.appointmentDate|| '',
+          saat:       a.time       || a.saat        || a.appointmentTime|| '—',
+          status:     a.status     || a.Status      || 'upcoming',
+          randNo:     a.id         || a.appointmentNo || ('RND-' + Math.floor(Math.random()*90000+10000)),
+        }));
+
+      } catch (err) {
+        console.warn('Randevular API\'den alınamadı:', err.message);
+        isDemo = true;
+
+        // Demo veriler (backend hazır değilse)
+        allApts = [
+          { id: '1', doktor: 'Prof. Dr. Ali Kaya', bolum: 'Kardiyoloji', tarih: '2026-05-15', saat: '10:00', status: 'upcoming',  randNo: 'RND-10234' },
+          { id: '2', doktor: 'Dr. Emre Demir',     bolum: 'Nöroloji',    tarih: '2026-04-20', saat: '14:30', status: 'completed', randNo: 'RND-20891' },
+          { id: '3', doktor: 'Doç. Dr. Hülya Arslan', bolum: 'Ortopedi', tarih: '2026-03-10', saat: '09:00', status: 'cancelled', randNo: 'RND-39441' },
+        ];
+      }
+
+      welcomeMsg.textContent = isDemo
+        ? `Merhaba, ${userName} — (Demo mod — backend bağlantısı yok)`
+        : `Merhaba, ${userName} — toplam ${allApts.length} randevunuz var`;
+      filterBar.style.display = 'flex';
+      renderApts(allApts);
+
+      // Demo uyarısı
+      const demoNotice = document.getElementById('randevuDemoNotice');
+      if (demoNotice) demoNotice.style.display = isDemo ? 'block' : 'none';
+    }
+
+    // ============================================================
+    // RENDER
+    // ============================================================
+    function renderApts(list) {
+      const contentEl = document.getElementById('aptContent');
+
+      if (list.length === 0) {
+        contentEl.innerHTML = `
+          <div class="state-box">
+            <div class="state-icon">📭</div>
+            <h3>Henüz randevunuz yok</h3>
+            <p>İlk randevunuzu hemen oluşturun</p>
+            <button class="cta" onclick="window.location.href='randevu.html'">📅 Randevu Al</button>
+          </div>`;
+        return;
+      }
+
+      contentEl.innerHTML = list.map((a, idx) => {
+        const statusInfo = getStatusInfo(a.status);
+        const dateStr    = a.tarih ? formatDate(a.tarih) : '—';
+        const isUpcoming = a.status === 'upcoming';
+
+        return `
+          <div class="apt-card ${a.status === 'cancelled' ? 'cancelled' : ''}" id="apt-${a.id}" style="animation-delay:${idx * 0.06}s">
+            <div class="apt-info">
+              <span class="apt-no">${a.randNo}</span>
+              <div class="apt-title">🩺 ${a.doktor}</div>
+              <div style="color:var(--text-muted);font-size:0.88rem;margin-bottom:8px;">🏥 ${a.bolum}</div>
+              <div class="apt-meta">
+                <div class="apt-meta-item">📅 ${dateStr}</div>
+                <div class="apt-meta-item">🕐 ${a.saat}</div>
+              </div>
+            </div>
+            <div class="apt-actions">
+              <span class="apt-status ${statusInfo.cls}">${statusInfo.icon} ${statusInfo.label}</span>
+              ${isUpcoming ? `<button class="btn-cancel" onclick="iptalEt('${a.id}')">❌ İptal Et</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getStatusInfo(status) {
+      const map = {
+        upcoming:  { cls: 'status-upcoming',  icon: '✅', label: 'Yaklaşan'  },
+        completed: { cls: 'status-completed', icon: '🔵', label: 'Tamamlandı' },
+        cancelled: { cls: 'status-cancelled', icon: '❌', label: 'İptal Edildi' },
+      };
+      return map[status] || map['upcoming'];
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '—';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('tr-TR', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    // ============================================================
+    // FILTER
+    // ============================================================
+    function filterApts(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (type === 'all') renderApts(allApts);
+      else renderApts(allApts.filter(a => a.status === type));
+    }
+
+    // ============================================================
+    // CANCEL APPOINTMENT
+    // ============================================================
+    async function iptalEt(id) {
+      if (!confirm('Bu randevuyu iptal etmek istediğinizden emin misiniz?')) return;
+
+      const card = document.getElementById('apt-' + id);
+      if (card) { card.style.opacity = '0.5'; card.style.pointerEvents = 'none'; }
+
+      try {
+        await RandevuAPI.iptalEt(id);
+        // Local state güncelle
+        const apt = allApts.find(a => a.id === id);
+        if (apt) apt.status = 'cancelled';
+        renderApts(allApts);
+      } catch (err) {
+        alert('İptal edilirken hata oluştu: ' + (err.message || 'Bilinmeyen hata'));
+        if (card) { card.style.opacity = '1'; card.style.pointerEvents = 'auto'; }
+      }
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    loadRandevular();
+  </script>
+
+</body>
+</html>

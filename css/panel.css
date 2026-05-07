@@ -1,0 +1,347 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+  font-family: Arial, sans-serif;
+
+}
+
+
+
+/* =========================
+   BODY
+========================= */
+
+body {
+
+  display: flex;
+
+  background: #f4f6f9;
+
+  min-height: 100vh;
+
+}
+
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+
+  width: 260px;
+
+  background: #1e293b;
+
+  color: white;
+
+  padding: 30px 20px;
+
+  position: fixed;
+
+  left: 0;
+
+  top: 0;
+
+  height: 100vh;
+
+}
+
+
+
+.sidebar h2 {
+
+  margin-bottom: 40px;
+
+  text-align: center;
+
+  font-size: 24px;
+
+}
+
+
+
+.sidebar ul {
+
+  list-style: none;
+
+}
+
+
+
+.sidebar ul li {
+
+  padding: 15px;
+
+  margin-bottom: 10px;
+
+  background: rgba(255,255,255,0.05);
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+
+
+.sidebar ul li:hover {
+
+  background: #2563eb;
+
+}
+
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+
+  margin-left: 260px;
+
+  width: calc(100% - 260px);
+
+  padding: 30px;
+
+}
+
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+
+  margin-bottom: 30px;
+
+}
+
+
+
+.topbar h1 {
+
+  font-size: 32px;
+
+  color: #111827;
+
+}
+
+
+
+/* =========================
+   CARDS
+========================= */
+
+.cards {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+  gap: 20px;
+
+  margin-bottom: 40px;
+
+}
+
+
+
+.card {
+
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+
+}
+
+
+
+.card h3 {
+
+  margin-bottom: 15px;
+
+  color: #6b7280;
+
+}
+
+
+
+.card p {
+
+  font-size: 36px;
+
+  font-weight: bold;
+
+  color: #111827;
+
+}
+
+
+
+/* =========================
+   TABLES
+========================= */
+
+table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: white;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin-top: 20px;
+
+}
+
+
+
+thead {
+
+  background: #2563eb;
+
+  color: white;
+
+}
+
+
+
+th {
+
+  padding: 18px;
+
+  text-align: left;
+
+}
+
+
+
+td {
+
+  padding: 16px;
+
+  border-bottom: 1px solid #eee;
+
+}
+
+
+
+tr:hover {
+
+  background: #f9fafb;
+
+}
+
+
+
+/* =========================
+   SECTION
+========================= */
+
+.section {
+
+  margin-bottom: 50px;
+
+}
+
+
+
+.section h2 {
+
+  margin-bottom: 20px;
+
+  color: #111827;
+
+}
+
+
+
+/* =========================
+   HIDDEN SECTION
+========================= */
+
+.hidden {
+
+  display: none;
+
+}
+
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+
+  padding: 10px 15px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+
+
+button:hover {
+
+  opacity: 0.8;
+
+}
+
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 900px) {
+
+  .sidebar {
+
+    width: 100%;
+
+    height: auto;
+
+    position: relative;
+
+  }
+
+
+
+  .main-content {
+
+    margin-left: 0;
+
+    width: 100%;
+
+  }
+
+}

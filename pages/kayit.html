@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kayıt Ol - Hastane Sistemi</title>
+  <link rel="stylesheet" href="../css/stil.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="navbar" id="navbar">
+    <h2><a href="../index.html" style="text-decoration:none;color:inherit;">🏥 Hastane Sistemi</a></h2>
+    <div class="navbar-links" id="navLinks"></div>
+  </div>
+
+  <div class="auth-section">
+    <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-100px;left:-100px;width:350px;height:350px;background:radial-gradient(circle,rgba(37,99,235,0.08) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+
+    <div class="auth-card" style="max-width:500px;">
+      <div class="logo"></div>
+      <h2>Hesap Oluşturun</h2>
+      <p class="sub">Ücretsiz kayıt olun, randevunuzu alın</p>
+
+      <div class="alert alert-danger" id="alert-danger"></div>
+      <div class="alert alert-success" id="alert-success">✅ Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...</div>
+
+      <!-- Progress Bar -->
+      <div class="register-progress">
+        <div class="reg-step active" id="step-1">
+          <div class="reg-circle">1</div>
+          <span>Kişisel Bilgiler</span>
+        </div>
+        <div class="reg-line" id="line-1"></div>
+        <div class="reg-step" id="step-2">
+          <div class="reg-circle">2</div>
+          <span>Hesap Bilgileri</span>
+        </div>
+      </div>
+
+      <form id="registerForm" novalidate>
+        <!-- Step 1 -->
+        <div id="form-step-1">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-group">
+              <label>Ad</label>
+              <input type="text" id="firstName" placeholder="Adınız" required>
+            </div>
+            <div class="form-group">
+              <label>Soyad</label>
+              <input type="text" id="lastName" placeholder="Soyadınız" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Telefon Numarası</label>
+            <input type="tel" id="phone" placeholder="05XX XXX XX XX">
+          </div>
+          <div class="form-group">
+            <label>Doğum Tarihi</label>
+            <input type="date" id="birthDate">
+          </div>
+          <div class="form-group">
+            <label>Cinsiyet</label>
+            <select id="gender">
+              <option value="">Seçiniz</option>
+              <option value="erkek">Erkek</option>
+              <option value="kadin">Kadın</option>
+              <option value="diger">Diğer</option>
+            </select>
+          </div>
+          <button type="button" class="btn-primary" onclick="nextStep()">Devam Et →</button>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="form-step-2" style="display:none;">
+          <div class="form-group">
+            <label>E-posta Adresi</label>
+            <input type="email" id="email" placeholder="ornek@email.com" required>
+          </div>
+          <div class="form-group">
+            <label>Şifre</label>
+            <div style="position:relative;">
+              <input type="password" id="password" placeholder="En az 6 karakter" required>
+              <button type="button" onclick="togglePass()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;">👁️</button>
+            </div>
+            <div class="password-strength" id="passStrength" style="margin-top:8px;display:none;">
+              <div class="strength-bar" id="strengthBar"></div>
+              <span id="strengthText" style="font-size:0.78rem;font-weight:600;"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Şifre Tekrar</label>
+            <input type="password" id="passwordConfirm" placeholder="Şifrenizi tekrar girin" required>
+          </div>
+          <div style="margin-bottom:18px;">
+            <label style="display:flex;align-items:flex-start;gap:10px;font-size:0.88rem;color:var(--text-muted);cursor:pointer;line-height:1.5;">
+              <input type="checkbox" id="terms" style="width:auto;margin-top:2px;accent-color:var(--primary);">
+              <span><a href="#" style="color:var(--primary);font-weight:600;">Kullanım Koşulları</a> ve <a href="#" style="color:var(--primary);font-weight:600;">Gizlilik Politikası</a>'nı kabul ediyorum</span>
+            </label>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button type="button" class="btn-outline-back" onclick="prevStep()">← Geri</button>
+            <button type="submit" class="btn-primary" style="flex:1;" id="registerBtn">Kayıt Ol</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="auth-footer">Zaten hesabınız var mı? <a href="giris.html">Giriş Yapın</a></div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script>
+    buildNavbar('kayit');
+    if (AuthAPI.isLoggedIn()) window.location.href = 'randevu.html';
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30));
+
+    function nextStep() {
+      const fn    = document.getElementById('firstName').value.trim();
+      const ln    = document.getElementById('lastName').value.trim();
+      const danger = document.getElementById('alert-danger');
+      if (!fn || !ln) {
+        danger.textContent   = '⚠️ Ad ve soyad alanları zorunludur!';
+        danger.style.display = 'block';
+        return;
+      }
+      danger.style.display = 'none';
+      document.getElementById('form-step-1').style.display = 'none';
+      document.getElementById('form-step-2').style.display = 'block';
+      document.getElementById('step-1').classList.remove('active');
+      document.getElementById('step-1').classList.add('done');
+      document.getElementById('line-1').classList.add('done');
+      document.getElementById('step-2').classList.add('active');
+    }
+
+    function prevStep() {
+      document.getElementById('form-step-2').style.display = 'none';
+      document.getElementById('form-step-1').style.display = 'block';
+      document.getElementById('step-2').classList.remove('active');
+      document.getElementById('line-1').classList.remove('done');
+      document.getElementById('step-1').classList.remove('done');
+      document.getElementById('step-1').classList.add('active');
+    }
+
+    function togglePass() {
+      const inp = document.getElementById('password');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    document.getElementById('password').addEventListener('input', function() {
+      const val = this.value;
+      const bar = document.getElementById('strengthBar');
+      const text = document.getElementById('strengthText');
+      const container = document.getElementById('passStrength');
+      container.style.display = val ? 'flex' : 'none';
+      let strength = 0;
+      if (val.length >= 6) strength++;
+      if (val.match(/[A-Z]/)) strength++;
+      if (val.match(/[0-9]/)) strength++;
+      if (val.match(/[^A-Za-z0-9]/)) strength++;
+      const colors = ['#ef4444','#f59e0b','#10b981','#2563eb'];
+      const labels = ['Zayıf','Orta','İyi','Güçlü'];
+      const widths = ['25%','50%','75%','100%'];
+      bar.style.width = widths[strength - 1] || '0%';
+      bar.style.background = colors[strength - 1] || '#e2e8f0';
+      text.textContent = labels[strength - 1] || '';
+      text.style.color = colors[strength - 1] || '';
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName  = document.getElementById('lastName').value.trim();
+      const phone     = document.getElementById('phone').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      const password  = document.getElementById('password').value;
+      const confirm   = document.getElementById('passwordConfirm').value;
+      const terms     = document.getElementById('terms').checked;
+      const danger    = document.getElementById('alert-danger');
+      const success   = document.getElementById('alert-success');
+      const btn       = document.getElementById('registerBtn');
+
+      danger.style.display = 'none';
+
+      if (!email || !password) {
+        danger.textContent   = '⚠️ E-posta ve şifre zorunludur!';
+        danger.style.display = 'block';
+        return;
+      }
+      if (password !== confirm) {
+        danger.textContent   = '❌ Şifreler eşleşmiyor!';
+        danger.style.display = 'block';
+        return;
+      }
+      if (password.length < 6) {
+        danger.textContent   = '❌ Şifre en az 6 karakter olmalı!';
+        danger.style.display = 'block';
+        return;
+      }
+      if (!terms) {
+        danger.textContent   = '❌ Kullanım koşullarını kabul etmelisiniz!';
+        danger.style.display = 'block';
+        return;
+      }
+
+      btn.disabled    = true;
+      btn.textContent = '⏳ Kaydediliyor...';
+
+      try {
+        const fullName = firstName + ' ' + lastName;
+        // 🔌 BACKEND API çağrısı
+        await AuthAPI.kayit(fullName, email, password, phone);
+
+        success.style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        setTimeout(() => window.location.href = 'giris.html', 2000);
+      } catch (error) {
+        danger.textContent   = '❌ ' + (error.message || 'Kayıt sırasında hata oluştu!');
+        danger.style.display = 'block';
+        btn.disabled    = false;
+        btn.textContent = 'Kayıt Ol';
+      }
+    });
+  </script>
+</body>
+</html>

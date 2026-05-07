@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Randevu Al - Hastane Sistemi</title>
+  <link rel="stylesheet" href="../css/stil.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar — dinamik: giriş yaptıysa kullanıcı adı + çıkış butonu gösterir -->
+  <div class="navbar" id="navbar">
+    <h2><a href="../index.html" style="text-decoration:none;color:inherit;">🏥 Hastane Sistemi</a></h2>
+    <div class="navbar-links" id="navLinks">
+      <!-- JS ile doldurulacak -->
+    </div>
+  </div>
+
+  <!-- Randevu Section -->
+  <div class="randevu-section">
+
+    <div class="randevu-header">
+      <div class="hero-badge" style="margin:0 auto 16px;">📅 Online Randevu Sistemi</div>
+      <h1>Randevu Alın</h1>
+      <p>Size en uygun doktoru seçin ve randevunuzu oluşturun</p>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="progress-steps" id="progressSteps">
+      <div class="p-step active" id="pstep-1"><div class="p-step-circle">1</div><div class="p-step-label">Bölüm</div></div>
+      <div class="p-line" id="pline-1"></div>
+      <div class="p-step" id="pstep-2"><div class="p-step-circle">2</div><div class="p-step-label">Doktor</div></div>
+      <div class="p-line" id="pline-2"></div>
+      <div class="p-step" id="pstep-3"><div class="p-step-circle">3</div><div class="p-step-label">Tarih & Saat</div></div>
+      <div class="p-line" id="pline-3"></div>
+      <div class="p-step" id="pstep-4"><div class="p-step-circle">4</div><div class="p-step-label">Onay</div></div>
+    </div>
+
+    <!-- STEP 1: Bölüm -->
+    <div id="step-bolum" class="step-container">
+      <div class="randevu-card full">
+        <h3>🏥 Bölüm Seçin</h3>
+        <div id="bolumLoading" style="text-align:center;padding:40px;color:var(--text-muted);">
+          <span style="font-size:2rem;"></span><p style="margin-top:8px;">Bölümler yükleniyor...</p>
+        </div>
+        <div class="bolum-grid" id="bolumGrid" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Doktor -->
+    <div id="step-doktor" class="step-container" style="display:none;">
+      <div class="randevu-card full">
+        <h3>👨‍⚕️ Doktor Seçin</h3>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:20px;" id="bolumLabel"></p>
+        <div id="doktorLoading" style="text-align:center;padding:40px;color:var(--text-muted);display:none;">
+          <span style="font-size:2rem;">⏳</span><p style="margin-top:8px;">Doktorlar yükleniyor...</p>
+        </div>
+        <div class="doctor-list" id="doctorList"></div>
+        <button class="btn-back" onclick="goStep(1)">← Geri</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Tarih & Saat -->
+    <div id="step-tarih" class="step-container" style="display:none;">
+      <div class="randevu-grid">
+        <div class="randevu-card">
+          <h3>📅 Tarih Seçin</h3>
+          <div class="form-group">
+            <input type="date" id="appointmentDate" onchange="loadTimeSlots()">
+          </div>
+          <div style="background:var(--primary-light);border-radius:10px;padding:14px 16px;font-size:0.86rem;color:var(--primary);font-weight:600;margin-top:8px;">
+            💡 Bugünden itibaren 30 gün içindeki tarihler seçilebilir.
+          </div>
+        </div>
+        <div class="randevu-card">
+          <h3>🕐 Saat Seçin</h3>
+          <div class="time-slots" id="timeSlots">
+            <p style="color:var(--text-muted);font-size:0.9rem;">Önce tarih seçin</p>
+          </div>
+        </div>
+        <div class="randevu-card full">
+          <h3>📋 Randevu Özeti</h3>
+          <div class="summary-item"><span>Bölüm</span><span id="sum-bolum" class="empty">—</span></div>
+          <div class="summary-item"><span>Doktor</span><span id="sum-doktor" class="empty">—</span></div>
+          <div class="summary-item"><span>Tarih</span><span id="sum-tarih" class="empty">—</span></div>
+          <div class="summary-item"><span>Saat</span><span id="sum-saat" class="empty">—</span></div>
+          <div style="display:flex;gap:12px;margin-top:20px;">
+            <button class="btn-back" onclick="goStep(2)">← Geri</button>
+            <button class="btn-primary" style="flex:1;margin-top:0;" id="confirmBtn" onclick="goStep(4)">Randevuyu Onayla ✓</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Onay -->
+    <div id="step-onay" class="step-container" style="display:none;">
+      <div class="success-box">
+        <div class="success-icon">🎉</div>
+        <h2>Randevunuz Alındı!</h2>
+        <p>Randevu bilgileriniz e-posta adresinize gönderildi.</p>
+        <div style="background:var(--bg);border-radius:14px;padding:20px;text-align:left;margin-bottom:24px;border:1px solid var(--border);">
+          <div class="summary-item"><span>Bölüm</span><span id="conf-bolum">—</span></div>
+          <div class="summary-item"><span>Doktor</span><span id="conf-doktor">—</span></div>
+          <div class="summary-item"><span>Tarih</span><span id="conf-tarih">—</span></div>
+          <div class="summary-item"><span>Saat</span><span id="conf-saat">—</span></div>
+          <div class="summary-item"><span>Randevu No</span><span id="conf-no" style="color:var(--primary);">—</span></div>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="cta" onclick="printAppointment()">🖨️ Yazdır</button>
+          <button class="cta-outline" onclick="newAppointment()">🔄 Yeni Randevu</button>
+          <button class="cta-outline" onclick="window.location.href='randevularim.html'" style="background:var(--primary-light);color:var(--primary);border-color:var(--primary);">📋 Randevularım</button>
+        </div>
+        <div id="demoNotice" style="display:none;margin-top:16px;padding:10px 16px;background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;font-size:0.82rem;color:#92400e;font-weight:600;">
+          ⚠️ Demo mod: Backend bağlantısı sağlanamadı. Randevu gerçek sistemde kaydedilmedi.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-bottom">
+      <p>© 2026 <span>Hastane Sistemi</span> — Üniversite Proje Grubu</p>
+    </div>
+  </footer>
+
+  <!-- ✅ api.js her şeyden ÖNCE -->
+  <script src="../js/api.js"></script>
+  <script>
+    // ============================================================
+    // AUTH CHECK — giriş yapılmamışsa yönlendir
+    // ============================================================
+    if (!AuthAPI.isLoggedIn()) {
+      alert('Bu sayfayı görmek için giriş yapmalısınız!');
+      window.location.href = 'giris.html';
+    }
+
+    // ============================================================
+    // NAVBAR — buildNavbar kullan (api.js'den)
+    // ============================================================
+    buildNavbar('randevu', true);
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let selectedBolum  = null;
+    let selectedDoktor = null;
+    let selectedDate   = null;
+    let selectedTime   = null;
+    let currentStep    = 1;
+
+    // Fallback static data (backend hazır olmadığında)
+    const FALLBACK_BOLUMLER = [
+      { id: 1, name: 'Kardiyoloji',      icon: '❤️',  desc: 'Kalp ve damar hastalıkları' },
+      { id: 2, name: 'Nöroloji',         icon: '🧠',  desc: 'Sinir sistemi hastalıkları' },
+      { id: 3, name: 'Ortopedi',         icon: '🦴',  desc: 'Kemik ve eklem hastalıkları' },
+      { id: 4, name: 'Göz Hastalıkları', icon: '👁️',  desc: 'Göz muayene ve tedavisi' },
+      { id: 5, name: 'Dahiliye',         icon: '🩺',  desc: 'İç hastalıkları uzmanı' },
+      { id: 6, name: 'Pediatri',         icon: '👶',  desc: 'Çocuk sağlığı ve hastalıkları' },
+      { id: 7, name: 'Dermatoloji',      icon: '🧴',  desc: 'Cilt hastalıkları uzmanı' },
+      { id: 8, name: 'Psikiyatri',       icon: '🧘',  desc: 'Ruh sağlığı ve hastalıkları' },
+    ];
+
+    const FALLBACK_DOKTORLAR = {
+      1: [
+        { id: 1,  name: 'Dr. Ahmet Yılmaz',  specialty: 'Kardiyoloji', exp: '15 yıl', rating: '4.9' },
+        { id: 2,  name: 'Dr. Ayşe Demir',    specialty: 'Kardiyoloji', exp: '10 yıl', rating: '4.8' },
+      ],
+      2: [
+        { id: 3,  name: 'Dr. Elif Yıldız',   specialty: 'Nöroloji',    exp: '18 yıl', rating: '5.0' },
+        { id: 4,  name: 'Dr. Mehmet Kaya',   specialty: 'Nöroloji',    exp: '9 yıl',  rating: '4.6' },
+      ],
+      3: [
+        { id: 5,  name: 'Dr. Hasan Acar',    specialty: 'Ortopedi',    exp: '20 yıl', rating: '4.9' },
+        { id: 6,  name: 'Dr. Mustafa Arslan',specialty: 'Ortopedi',    exp: '12 yıl', rating: '4.7' },
+      ],
+      4: [
+        { id: 7,  name: 'Dr. Ali Özkan',     specialty: 'Göz Hastalıkları', exp: '11 yıl', rating: '4.8' },
+        { id: 8,  name: 'Dr. Emine Kurt',    specialty: 'Göz Hastalıkları', exp: '14 yıl', rating: '4.9' },
+      ],
+      5: [
+        { id: 9,  name: 'Dr. Selin Aydın',   specialty: 'Dahiliye',    exp: '22 yıl', rating: '4.9' },
+        { id: 10, name: 'Dr. Fatma Çelik',   specialty: 'Dahiliye',    exp: '7 yıl',  rating: '4.5' },
+      ],
+      6: [
+        { id: 11, name: 'Dr. Zeynep Şahin',  specialty: 'Pediatri',    exp: '10 yıl', rating: '4.8' },
+        { id: 12, name: 'Dr. Gizem Karaca',  specialty: 'Pediatri',    exp: '13 yıl', rating: '4.9' },
+      ],
+      7: [
+        { id: 13, name: 'Dr. Murat Turan',   specialty: 'Dermatoloji', exp: '8 yıl',  rating: '4.7' },
+        { id: 14, name: 'Dr. İbrahim Koç',   specialty: 'Dermatoloji', exp: '16 yıl', rating: '5.0' },
+      ],
+      8: [
+        { id: 15, name: 'Dr. Cem Kaplan',    specialty: 'Psikiyatri',  exp: '9 yıl',  rating: '4.6' },
+        { id: 16, name: 'Dr. Burcu Erdem',   specialty: 'Psikiyatri',  exp: '11 yıl', rating: '4.8' },
+      ],
+    };
+
+    const FALLBACK_SAATLER = [
+      '09:00','09:30','10:00','10:30','11:00','11:30',
+      '13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30'
+    ];
+
+    // Icon mapping for departments coming from API
+    const DEPT_ICONS = {
+      'kardiyoloji': '❤️', 'nöroloji': '🧠', 'ortopedi': '🦴',
+      'göz': '👁️', 'dahiliye': '🩺', 'pediatri': '👶',
+      'dermatoloji': '🧴', 'psikiyatri': '🧘', 'üroloji': '🫀',
+      'default': '🏥'
+    };
+
+    function getDeptIcon(name) {
+      if (!name) return '🏥';
+      const lower = name.toLowerCase();
+      for (const [key, icon] of Object.entries(DEPT_ICONS)) {
+        if (lower.includes(key)) return icon;
+      }
+      return '🏥';
+    }
+
+    function getImageName(name) {
+      return name
+        .toLowerCase()
+        .replace(/prof\. dr\. /g, 'dr-')
+        .replace(/doç\. dr\. /g, 'dr-')
+        .replace(/dr\. /g, 'dr-')
+        .replace(/ı/g, 'i')
+        .replace(/ğ/g, 'g')
+        .replace(/ü/g, 'u')
+        .replace(/ş/g, 's')
+        .replace(/ö/g, 'o')
+        .replace(/ç/g, 'c')
+        .replace(/\s+/g, '-');
+    }
+
+    // ============================================================
+    // LOAD BOLUMLER FROM API (with fallback)
+    // ============================================================
+    async function loadBolumler() {
+      const loadingEl = document.getElementById('bolumLoading');
+      const gridEl    = document.getElementById('bolumGrid');
+      let bolumler    = [];
+
+      try {
+        bolumler = await DoktorAPI.getBolumler();
+        // API'den gelen format: [{id, name/Name, ...}]
+        bolumler = bolumler.map(b => ({
+          id:   b.id   || b.Id,
+          name: b.name || b.Name || b.bolumAdi || b.departmentName || 'Bilinmiyor',
+          desc: b.description || b.desc || '',
+          icon: getDeptIcon(b.name || b.Name || ''),
+        }));
+      } catch (err) {
+        console.warn('API bölümleri getirelemdi, fallback kullanılıyor:', err.message);
+        bolumler = FALLBACK_BOLUMLER;
+      }
+
+      loadingEl.style.display = 'none';
+      gridEl.style.display    = 'grid';
+      gridEl.innerHTML = bolumler.map(b => `
+        <div class="bolum-card" onclick="selectBolum(${b.id}, '${(b.name||'').replace(/'/g,"\\'")}', '${b.icon}', '${(b.desc||'').replace(/'/g,"\\'")}')">
+          <div class="bolum-icon">${b.icon}</div>
+          <h4>${b.name}</h4>
+          <p>${b.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function selectBolum(id, name, icon, desc) {
+      selectedBolum = { id, name, icon, desc };
+      document.getElementById('bolumLabel').textContent = `${icon} ${name} bölümü doktorları`;
+      loadDoktorlar(id);
+      goStep(2);
+    }
+
+    // ============================================================
+    // LOAD DOKTORLAR FROM API (with fallback)
+    // ============================================================
+    async function loadDoktorlar(bolumId) {
+      const loadingEl = document.getElementById('doktorLoading');
+      const listEl    = document.getElementById('doctorList');
+      loadingEl.style.display = 'block';
+      listEl.innerHTML = '';
+
+      let doktorlar = [];
+      try {
+        doktorlar = await DoktorAPI.getDoktorlar(bolumId);
+        doktorlar = doktorlar.map(d => ({
+          id:      d.id      || d.Id,
+          name:    d.name    || d.Name    || d.ad || d.doctorName || 'Bilinmiyor',
+          specialty: d.specialty || d.Specialty || d.uzmanlik || selectedBolum?.name || '',
+          exp:     d.experience || d.exp || d.yil || '',
+          rating:  d.rating   || d.Rating || '—',
+          avatar:  d.gender === 'F' || d.gender === 'female' ? '👩‍⚕️' : '👨‍⚕️',
+        }));
+      } catch (err) {
+        console.warn('API doktorları getirelemdi, fallback kullanılıyor:', err.message);
+        doktorlar = (FALLBACK_DOKTORLAR[bolumId] || []);
+      }
+
+      loadingEl.style.display = 'none';
+
+      if (doktorlar.length === 0) {
+        listEl.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:20px;">Bu bölümde kayıtlı doktor bulunamadı.</p>';
+        return;
+      }
+
+      listEl.innerHTML = doktorlar.map(d => {
+        const imgName = getImageName(d.name || '');
+        return `
+        <div class="doctor-card" onclick="selectDoktor(${d.id}, '${(d.name||'').replace(/'/g,"\\'")}', '${(d.specialty||'').replace(/'/g,"\\'")}', '${d.exp}', '${d.rating}')" id="doc-${d.id}">
+          <div class="doctor-avatar" style="width:80px;height:80px;border-radius:50%;overflow:hidden;margin:0 auto 10px;border:3px solid var(--primary-light,#e8f0fe);">
+            <img src="../images/doctors/${imgName}.jpg"
+                 alt="${d.name}"
+                 style="width:100%;height:100%;object-fit:cover;"
+                 onerror="this.src='../images/doctors/default.jpg'">
+          </div>
+          <h4>${d.name}</h4>
+          <p>${d.specialty}</p>
+          <div style="display:flex;gap:6px;justify-content:center;margin-top:6px;flex-wrap:wrap;">
+            ${d.rating !== '—' ? `<span class="doctor-badge">⭐ ${d.rating}</span>` : ''}
+            ${d.exp ? `<span class="doctor-badge">🕐 ${d.exp}</span>` : ''}
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    function selectDoktor(id, name, specialty, exp, rating) {
+      document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('selected'));
+      const card = document.getElementById('doc-' + id);
+      if (card) card.classList.add('selected');
+      selectedDoktor = { id, name, specialty, exp, rating };
+      updateSummary();
+      setTimeout(() => goStep(3), 300);
+    }
+
+    // ============================================================
+    // LOAD TIME SLOTS FROM API (with fallback)
+    // ============================================================
+    async function loadTimeSlots() {
+      selectedDate = document.getElementById('appointmentDate').value;
+      selectedTime = null;
+      updateSummary();
+
+      const container = document.getElementById('timeSlots');
+      container.innerHTML = '<p style="color:var(--text-muted);">⏳ Saatler yükleniyor...</p>';
+
+      let saatler = [];
+      let isFallback = false;
+
+      try {
+        const result = await DoktorAPI.getMüsaitSaatler(selectedDoktor.id, selectedDate);
+        // API [{ time: "09:00", available: true }] veya ["09:00", ...] döndürebilir
+        if (Array.isArray(result) && result.length > 0) {
+          if (typeof result[0] === 'string') {
+            saatler = result.map(s => ({ time: s, available: true }));
+          } else {
+            saatler = result.map(s => ({
+              time:      s.time || s.saat || s,
+              available: s.available !== false && s.isAvailable !== false,
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn('Saatler API\'den alınamadı, fallback kullanılıyor:', err.message);
+        saatler = FALLBACK_SAATLER.map(s => ({ time: s, available: true }));
+        isFallback = true;
+      }
+
+      if (saatler.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted);">Bu tarihte müsait saat bulunamadı.</p>';
+        return;
+      }
+
+      container.innerHTML = saatler.map(s => {
+        const tid = 'slot-' + s.time.replace(':', '-');
+        if (!s.available) {
+          return `<div class="time-slot taken" title="Bu saat dolu">${s.time} 🚫</div>`;
+        }
+        return `<div class="time-slot" id="${tid}" onclick="selectTime('${s.time}')">${s.time}</div>`;
+      }).join('');
+
+      if (isFallback) {
+        container.innerHTML += '<p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">⚠️ Demo veriler gösteriliyor</p>';
+      }
+    }
+
+    function selectTime(time) {
+      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      const el = document.getElementById('slot-' + time.replace(':', '-'));
+      if (el) el.classList.add('selected');
+      selectedTime = time;
+      updateSummary();
+    }
+
+    // ============================================================
+    // SUMMARY UPDATE
+    // ============================================================
+    function updateSummary() {
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (val) { el.textContent = val; el.classList.remove('empty'); }
+        else      { el.textContent = '—'; el.classList.add('empty'); }
+      };
+      set('sum-bolum',  selectedBolum  ? `${selectedBolum.icon} ${selectedBolum.name}` : null);
+      set('sum-doktor', selectedDoktor ? selectedDoktor.name : null);
+      set('sum-tarih',  selectedDate   ? formatDate(selectedDate) : null);
+      set('sum-saat',   selectedTime   || null);
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // ============================================================
+    // STEP NAVIGATION
+    // ============================================================
+    const stepIds  = ['step-bolum','step-doktor','step-tarih','step-onay'];
+    const pstepIds = ['pstep-1','pstep-2','pstep-3','pstep-4'];
+    const plineIds = ['pline-1','pline-2','pline-3'];
+
+    async function goStep(n) {
+      if (n === 4) {
+        if (!selectedBolum || !selectedDoktor || !selectedDate || !selectedTime) {
+          alert('⚠️ Lütfen tüm bilgileri doldurun: Bölüm, Doktor, Tarih ve Saat seçin!');
+          return;
+        }
+        await confirmAppointment();
+      }
+
+      currentStep = n;
+      stepIds.forEach((id, i) => {
+        document.getElementById(id).style.display = (i === n - 1) ? 'block' : 'none';
+      });
+      pstepIds.forEach((id, i) => {
+        const el = document.getElementById(id);
+        el.classList.remove('active','done');
+        if (i + 1 < n)       el.classList.add('done');
+        else if (i + 1 === n) el.classList.add('active');
+      });
+      plineIds.forEach((id, i) => {
+        document.getElementById(id).classList.toggle('done', i + 1 < n);
+      });
+
+      if (n === 3) {
+        const today   = new Date().toISOString().split('T')[0];
+        const maxDate = new Date();
+        maxDate.setDate(maxDate.getDate() + 30);
+        const dateInput = document.getElementById('appointmentDate');
+        dateInput.min = today;
+        dateInput.max = maxDate.toISOString().split('T')[0];
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ============================================================
+    // CONFIRM APPOINTMENT — API çağrısı
+    // ============================================================
+    async function confirmAppointment() {
+      const confirmBtn = document.getElementById('confirmBtn');
+      confirmBtn.disabled    = true;
+      confirmBtn.textContent = '⏳ Randevu oluşturuluyor...';
+
+      let randNo = '';
+      let apiSuccess = false;
+
+      try {
+        // 🔌 BACKEND API çağrısı — AppointmentAPI.create({ doctorId, date, time })
+        const result = await AppointmentAPI.create({
+          doctorId: selectedDoktor.id,
+          date:     selectedDate,
+          time:     selectedTime,
+        });
+        // Backend'den gelen ID'yi al (farklı field isimlerini destekle)
+        randNo = result?.id
+              || result?.appointmentId
+              || result?.randevuId
+              || result?.data?.id
+              || ('RND-' + Math.floor(Math.random() * 90000 + 10000));
+        apiSuccess = true;
+      } catch (err) {
+        console.warn('Randevu API hatası:', err.message);
+        // Backend hazır değilse veya hata varsa — demo mod
+        randNo = 'DEMO-' + Math.floor(Math.random() * 90000 + 10000);
+      } finally {
+        confirmBtn.disabled    = false;
+        confirmBtn.textContent = 'Randevuyu Onayla ✓';
+      }
+
+      // Onay sayfasını doldur
+      const set = (id, val) => { document.getElementById(id).textContent = val; };
+      set('conf-bolum',  `${selectedBolum.icon} ${selectedBolum.name}`);
+      set('conf-doktor', selectedDoktor.name);
+      set('conf-tarih',  formatDate(selectedDate));
+      set('conf-saat',   selectedTime);
+      set('conf-no',     randNo);
+
+      // Demo uyarısı göster/gizle
+      const demoNotice = document.getElementById('demoNotice');
+      if (demoNotice) demoNotice.style.display = apiSuccess ? 'none' : 'block';
+    }
+
+    function newAppointment() {
+      selectedBolum = selectedDoktor = selectedDate = selectedTime = null;
+      document.getElementById('bolumLoading').style.display = 'block';
+      document.getElementById('bolumGrid').style.display    = 'none';
+      goStep(1);
+      loadBolumler();
+    }
+
+    function printAppointment() { window.print(); }
+
+    // ============================================================
+    // NAVBAR SCROLL
+    // ============================================================
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 30));
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    loadBolumler();
+
+    const today = new Date().toISOString().split('T')[0];
+    const dateEl = document.getElementById('appointmentDate');
+    if (dateEl) dateEl.min = today;
+  </script>
+
+</body>
+</html>

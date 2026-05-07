@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Doktorlar — Hastane Sistemi</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/stil.css">
+  <link rel="stylesheet" href="../css/doktorlar.css">
+
+  <style>
+    /* ========================= */
+    /* 🦸 Hero */
+    /* ========================= */
+
+    .page-hero {
+      padding: 110px 24px 50px;
+      background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 40%, #f5f3ff 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .page-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #ede9fe, #dbeafe);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: .82rem;
+      padding: 7px 18px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(99, 102, 241, .2);
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .page-hero p {
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: auto;
+    }
+
+    /* ========================= */
+    /* 🔍 Search */
+    /* ========================= */
+
+    .search-wrap {
+      max-width: 460px;
+      margin: 28px auto 0;
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: white;
+      outline: none;
+      font-size: .95rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* ========================= */
+    /* 📦 Doctors */
+    /* ========================= */
+
+    .doktor-section {
+      padding: 56px 24px 80px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-label {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 20px;
+    }
+
+    .doktor-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .doctor-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 22px;
+      padding: 28px 22px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      animation: fadeUp .5s ease both;
+    }
+
+    .doctor-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .doctor-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 36px rgba(37, 99, 235, .15);
+    }
+
+    .doctor-card:hover::before {
+      opacity: .04;
+    }
+
+    .doctor-avatar {
+
+      width: 74px;
+
+      height: 74px;
+
+      border-radius: 50%;
+
+      overflow: hidden;
+
+      margin-bottom: 18px;
+
+      position: relative;
+
+      z-index: 1;
+
+    }
+
+
+
+    .doctor-avatar img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+    .doctor-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+
+    .doctor-department {
+      font-size: .88rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doctor-info {
+      font-size: .84rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doctor-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .doctor-status {
+      font-size: .8rem;
+      color: #16a34a;
+      font-weight: 700;
+      background: #dcfce7;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .doctor-btn {
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .doctor-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ========================= */
+    /* 💀 Skeleton */
+    /* ========================= */
+
+    .skeleton {
+      height: 250px;
+      border-radius: 22px;
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    /* ========================= */
+    /* 📱 Responsive */
+    /* ========================= */
+
+    @media(max-width:640px) {
+
+      .doktor-container {
+        grid-template-columns: 1fr;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ========================= -->
+  <!-- 🔵 Navbar -->
+  <!-- ========================= -->
+
+  <nav class="navbar" id="navbar">
+    <h2><a href="../index.html" style="text-decoration:none;color:inherit;">🏥 Hastane</a></h2>
+    <div class="navbar-links" id="navLinks"></div>
+  </nav>
+
+  <!-- ========================= -->
+  <!-- 🦸 Hero -->
+  <!-- ========================= -->
+
+  <div class="page-hero">
+
+    <div class="page-hero-badge">
+      Uzman Doktorlarımız
+    </div>
+
+    <h1>
+      Profesyonel <span style="color:var(--primary)">Doktor Kadromuz</span>
+    </h1>
+
+    <p>
+      Alanında uzman doktorlarımızdan hızlı ve güvenli şekilde randevu alın.
+    </p>
+
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+
+      <input type="text" id="searchInput" placeholder="Doktor ara..." oninput="filterDoctors()">
+    </div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- 📦 Doctors -->
+  <!-- ========================= -->
+
+  <div class="doktor-section">
+
+    <p class="section-label" id="sectionLabel">
+      Doktorlar
+    </p>
+
+    <div id="doktor-listesi" class="doktor-container">
+
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- 📜 Scripts -->
+  <!-- ========================= -->
+
+  <script src="../js/api.js"></script>
+
+  <script>
+
+    const container = document.getElementById("doktor-listesi");
+
+    let allDoctors = [];
+
+    // ============================================
+    // Load Doctors
+    // ============================================
+
+    async function loadDoctors() {
+
+      const bolumId = localStorage.getItem("selectedBolumId");
+
+      try {
+
+        const data = await DoktorAPI.getDoktorlar(bolumId);
+
+        allDoctors = data;
+
+        renderDoctors(allDoctors);
+
+      } catch (err) {
+
+        console.warn("API hatası:", err);
+
+        allDoctors = [
+
+          {
+            id: 1,
+            ad: "Dr. Ahmet Yılmaz",
+            bolum: "Kardiyoloji"
+          },
+
+          {
+            id: 2,
+            ad: "Dr. Ayşe Demir",
+            bolum: "Nöroloji"
+          },
+
+          {
+            id: 3,
+            ad: "Dr. Mehmet Kaya",
+            bolum: "Ortopedi"
+          },
+
+          {
+            id: 4,
+            ad: "Dr. Fatma Çelik",
+            bolum: "Dermatoloji"
+          },
+
+          {
+            id: 5,
+            ad: "Dr. Ali Özkan",
+            bolum: "Genel Cerrahi"
+          },
+
+          {
+            id: 6,
+            ad: "Dr. Zeynep Şahin",
+            bolum: "Pediatri"
+          },
+
+          {
+            id: 7,
+            ad: "Dr. Mustafa Arslan",
+            bolum: "Üroloji"
+          },
+
+          {
+            id: 8,
+            ad: "Dr. Emine Kurt",
+            bolum: "Kadın Doğum"
+          },
+
+          {
+            id: 9,
+            ad: "Dr. Hasan Acar",
+            bolum: "Dahiliye"
+          },
+
+          {
+            id: 10,
+            ad: "Dr. Elif Yıldız",
+            bolum: "Göz Hastalıkları"
+          },
+
+          {
+            id: 11,
+            ad: "Dr. İbrahim Koç",
+            bolum: "Psikiyatri"
+          },
+
+          {
+            id: 12,
+            ad: "Dr. Selin Aydın",
+            bolum: "Nefroloji"
+          },
+
+          {
+            id: 13,
+            ad: "Dr. Murat Turan",
+            bolum: "Kulak Burun Boğaz"
+          },
+
+          {
+            id: 14,
+            ad: "Dr. Gizem Karaca",
+            bolum: "Endokrinoloji"
+          },
+
+          {
+            id: 15,
+            ad: "Dr. Okan Yavuz",
+            bolum: "Onkoloji"
+          },
+
+          {
+            id: 16,
+            ad: "Dr. Eda Polat",
+            bolum: "Enfeksiyon"
+          },
+
+          {
+            id: 17,
+            ad: "Dr. Yusuf Tekin",
+            bolum: "Fizyoterapi"
+          },
+
+          {
+            id: 18,
+            ad: "Dr. Burcu Erdem",
+            bolum: "Diş Hekimliği"
+          },
+
+          {
+            id: 19,
+            ad: "Dr. Cem Kaplan",
+            bolum: "Plastik Cerrahi"
+          },
+
+          {
+            id: 20,
+            ad: "Dr. Derya Taş",
+            bolum: "Acil Tıp"
+          }
+
+        ];
+
+        renderDoctors(allDoctors);
+
+      }
+
+    }
+
+    // ============================================
+    // Render Doctors
+    // ============================================
+
+    function renderDoctors(list) {
+
+      const label = document.getElementById("sectionLabel");
+
+      label.textContent = `${list.length} Doktor`;
+
+      if (list.length === 0) {
+
+        container.innerHTML = `
+    
+      <div class="no-results">
+        <h3>Doktor bulunamadı</h3>
+      </div>
+
+    `;
+
+        return;
+
+      }
+
+      container.innerHTML = list.map((d, i) => {
+
+        const id = d.id || d.Id;
+        const ad = d.ad || d.name || d.fullName || "Doktor";
+        const bolum = d.bolum || d.departmentName || "Bölüm";
+
+        const imgName = getImageName(ad);
+
+        return `
+
+      <div class="doctor-card" style="animation-delay:${i * .06}s">
+
+        <div class="doctor-avatar">
+
+  <img
+    src="../images/doctors/${imgName}.jpg"
+    alt="${ad}"
+    onerror="this.src='../images/doctors/default.jpg'"
+  >
+
+</div>
+
+             <h3>${ad}</h3>
+
+              <div class="doctor-department">
+                ${bolum}
+            </div>
+
+             <div class="doctor-info">
+          Uzman doktor kadromuz ile güvenli sağlık hizmeti sunuyoruz.
+             </div>
+
+            <div class="doctor-bottom">
+
+          <span class="doctor-status">
+            Müsait
+          </span>
+
+          <button class="doctor-btn" onclick="sec(${id})">
+            Randevu
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+      }).join("");
+
+    }
+
+    // ============================================
+    // Filter
+    // ============================================
+
+    function filterDoctors() {
+
+      const q = document.getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+      const filtered = allDoctors.filter(d => {
+
+        const name = (d.ad || d.name || d.fullName || "")
+          .toString()
+          .toLowerCase();
+
+        return name.includes(q);
+
+      });
+
+      renderDoctors(filtered);
+
+    }
+
+    // ============================================
+    // Select Doctor
+    // ============================================
+
+    function sec(id) {
+
+      localStorage.setItem("selectedDoctorId", id);
+
+      window.location.href = "randevu.html";
+
+    }
+
+    // ============================================
+    // Navbar Effect
+    // ============================================
+
+    window.addEventListener("scroll", () => {
+
+      document.getElementById("navbar")
+        .classList.toggle("scrolled", window.scrollY > 20);
+
+    });
+
+    // ============================================
+    // Init
+    // ============================================
+
+    buildNavbar('doktorlar');
+    loadDoctors();
+
+  </script>
+
+</body>
+
+</html>

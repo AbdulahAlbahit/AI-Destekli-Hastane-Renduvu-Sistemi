@@ -1,0 +1,413 @@
+/* ======================================== */
+/* 📅 randevu.css                           */
+/* Randevu + Randevularım Pages             */
+/* ======================================== */
+
+
+/* ── Background ── */
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(47, 128, 237, 0.08), transparent 70%);
+  top: -200px;
+  right: -200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ── Randevu Card (.auth-container override) ── */
+.auth-container {
+  position: relative;
+  z-index: 1;
+
+  width: 480px;
+  margin: 100px auto;
+  padding: 40px 38px;
+
+  background: var(--white);
+  border-radius: 24px;
+
+  box-shadow: 0 20px 60px rgba(47, 128, 237, 0.12);
+  border: 1px solid rgba(47, 128, 237, 0.12);
+
+  animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Tri-color gradient bar */
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(90deg, #2F80ED, #56CCF2, #10B981);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* ── Title ── */
+.auth-container h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.auth-container h2::before {
+  content: '📅 ';
+}
+
+
+/* ── Inputs & Selects ── */
+.auth-container input,
+.auth-container select {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 8px 0;
+
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  background: #FAFBFF;
+
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+
+  /* Custom select arrow */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+}
+
+.auth-container input[type="date"],
+.auth-container input[type="time"] {
+  cursor: pointer;
+  color-scheme: light;
+}
+
+.auth-container input:focus,
+.auth-container select:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.12);
+}
+
+.auth-container input::placeholder {
+  color: #9CA3AF;
+}
+
+.auth-container select option[value=""] {
+  color: #9CA3AF;
+}
+
+
+/* ── Submit Button ── */
+.auth-container > button,
+.auth-container button[type="submit"] {
+  width: 100%;
+  margin-top: 18px;
+  padding: 13px;
+
+  background: linear-gradient(135deg, #2F80ED, #56CCF2);
+  color: white;
+  border: none;
+  border-radius: 50px;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.auth-container > button:hover,
+.auth-container button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(47, 128, 237, 0.38);
+}
+
+
+/* ── Time Buttons (#saatler) ── */
+#saatler {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.time-btn {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  width: auto !important;
+  margin: 0 !important;
+
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  background: #F0F5FF;
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.time-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(47, 128, 237, 0.3);
+}
+
+.time-btn.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+
+/* ── Appointment List (#list) ── */
+#list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+#list li {
+  margin-bottom: 10px;
+  animation: slideUp 0.35s ease;
+}
+
+.appointment-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 14px 18px;
+  background: #F0F5FF;
+  border-radius: 14px;
+  border-left: 4px solid var(--primary);
+
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.appointment-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-light);
+}
+
+.appointment-card span {
+  flex: 1;
+}
+
+.appointment-card button {
+  flex-shrink: 0;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 6px 12px;
+
+  background: transparent;
+  color: #EF4444;
+  border: 1.5px solid #FECACA;
+  border-radius: 50px;
+
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.appointment-card button:hover {
+  background: #FEF2F2;
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* ── Message (#msg) ── */
+#msg {
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  min-height: 18px;
+}
+
+#msg:not(:empty) {
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: #FFF0F0;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+
+
+/* ── Randevularım Page (.container) ── */
+.container {
+  position: relative;
+  z-index: 1;
+
+  width: 580px;
+  margin: 100px auto;
+  padding: 40px 38px;
+
+  background: var(--white);
+  border-radius: 24px;
+
+  box-shadow: 0 20px 60px rgba(47, 128, 237, 0.12);
+  border: 1px solid rgba(47, 128, 237, 0.12);
+
+  animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(90deg, #10B981, #56CCF2, #2F80ED);
+}
+
+.container h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+/* Appointment items in randevularim */
+#appointmentsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#appointmentsList li {
+  margin-bottom: 12px;
+  animation: slideUp 0.35s ease;
+}
+
+#appointmentsList li > div {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  background: #F0F5FF !important;
+  border-radius: 14px !important;
+  padding: 14px 18px !important;
+  margin: 0 !important;
+
+  border-left: 4px solid var(--primary);
+
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#appointmentsList li > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(47, 128, 237, 0.12);
+}
+
+#appointmentsList li > div button {
+  flex-shrink: 0;
+  width: auto;
+  margin: 0;
+  padding: 6px 12px;
+
+  background: transparent;
+  color: #EF4444;
+  border: 1.5px solid #FECACA;
+  border-radius: 50px;
+
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#appointmentsList li > div button:hover {
+  background: #FEF2F2;
+  transform: none;
+  box-shadow: none;
+}
+
+#appointmentsList p {
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 15px;
+  padding: 30px 0;
+}
+
+.container a {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 15px;
+  transition: opacity 0.2s;
+}
+
+.container a:hover {
+  opacity: 0.75;
+}
+
+
+/* ── Responsive (600px) ── */
+@media (max-width: 600px) {
+  .auth-container,
+  .container {
+    width: 92%;
+    margin: 60px auto;
+    padding: 28px 20px;
+  }
+
+  #saatler {
+    gap: 6px;
+  }
+
+  .time-btn {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  .appointment-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
