@@ -2,4 +2,5 @@
   <Project Path="Api Layer/Api Layer.csproj" />
   <Project Path="Business Layer/Business Layer.csproj" />
   <Project Path="Data Accese Layer/Data Accese Layer.csproj" />
+  <Project Path="Sistem.Test/Sistem.Test.csproj" Id="12be8f41-0488-4930-b2c5-a0571a182e75" />
 </Solution>

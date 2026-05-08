@@ -19,5 +19,10 @@ namespace Business_Layer.Services
         {
             return await _repo.AddPatient(patient); 
         }
+
+        public async Task<Patient> GetPatient(int UserId)
+        {
+            return await _repo.GetPatient(UserId);
+        }
     }
 }

@@ -6,6 +6,8 @@ using AutoMapper;
 using Business_Layer.IServices;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Data_Accese_Layer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_Layer.Controllers
 {
@@ -16,11 +18,13 @@ namespace Api_Layer.Controllers
     {
         private readonly IAppointmentService _appointmentService;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _context;
 
-        public AppointmentController(IAppointmentService appointmentService,IMapper mapper)
+        public AppointmentController(IAppointmentService appointmentService,IMapper mapper,AppDbContext context)
         {
             _appointmentService = appointmentService;
-            _mapper=mapper;
+            _mapper = mapper;
+            _context =context;
         }
 
 
@@ -48,7 +52,7 @@ namespace Api_Layer.Controllers
        
         public async Task<ActionResult<List<AppointmentDetailDto>>> GetAllAppointment()
         {
-            var list = await _appointmentService.GetAllAppointment();
+              var list = await _appointmentService.GetAllAppointment();
             if(list == null)
             {
                 return NotFound ("Appointment bulunmadi");
@@ -104,7 +108,7 @@ namespace Api_Layer.Controllers
         {
             
             var app=_mapper.Map<Appointment>(appointment);
-
+            app.PatientId = int.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
             if (await _appointmentService.UpdateAppointment(app,id))
                 return Ok();
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Data_Accese_Layer.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data_Accese_Layer.Repos
 {
@@ -27,6 +28,13 @@ namespace Data_Accese_Layer.Repos
 
         }
 
+        public async Task<Patient> GetPatient(int UserId)
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync(c => c.UserId == UserId);
+            return patient;
+
+
+        }
 
     }
 }
