@@ -1,4 +1,5 @@
 ﻿using Api_Layer.topla;
+using Business_Layer.IServices;
 using Business_Layer.Services;
 using Data_Accese_Layer.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace Api_Layer.Controllers
     {
         private readonly IUserService _userService;
         private readonly JwtOptions _jwt;
+        private readonly IPatientService _patientService;
 
-        public UserController(IUserService userService,JwtOptions jwt)
+        public UserController(IUserService userService,JwtOptions jwt,IPatientService patientService)
         {
             _userService=userService;
             _jwt=jwt;
+            _patientService=patientService;
         }
 
 
@@ -34,7 +37,7 @@ namespace Api_Layer.Controllers
             };
            
             var User=await _userService.CheckUser(user);
-
+            var patient = _patientService.GetPatient(User.Id);
             if(User!=null)
             {
 
@@ -50,7 +53,7 @@ namespace Api_Layer.Controllers
                     ),
                     Subject=new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.NameIdentifier,User.Id.ToString())
+                        new Claim(ClaimTypes.NameIdentifier,patient.Id.ToString())
                       
                     })
                 };

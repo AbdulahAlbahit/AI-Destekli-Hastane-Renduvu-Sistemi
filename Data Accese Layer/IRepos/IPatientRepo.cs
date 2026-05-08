@@ -6,7 +6,7 @@ namespace Data_Accese_Layer.IRepos
     {
 
         Task<bool> AddPatient(Patient patient);
-
+        Task<Patient> GetPatient(int UserId);
 
 
     }

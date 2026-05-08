@@ -96,7 +96,7 @@ namespace Data_Accese_Layer.Repos
 
         public async Task <AppointmentDetailDto> GetAppointmentByUserId(int userId)
         {
-            var app = await _context.Appointments.Where(a => a.PatientId == userId).Select(a => new AppointmentDetailDto
+            var app = await _context.Appointments.Where(a => a.Patient.UserId == userId).Select(a => new AppointmentDetailDto
             {
 
                 AppointmentId = a.AppointmentId,
@@ -117,9 +117,9 @@ namespace Data_Accese_Layer.Repos
         }
 
      
-        public async Task<bool>  UpdateAppointment(Appointment appointment, int id  )
+        public async Task<bool>  UpdateAppointment(Appointment appointment, int appointmentid)
         {
-            var app=_context.Appointments.SingleOrDefault(c=>c.AppointmentId == id);
+            var app=_context.Appointments.SingleOrDefault(c=>c.AppointmentId == appointmentid);
             if (app != null)
             {
                app.TheTime=appointment.TheTime;
@@ -127,7 +127,7 @@ namespace Data_Accese_Layer.Repos
                app.TheStatus=appointment.TheStatus;
                app.ClinicId=appointment.ClinicId;
                app.DoctorId=appointment.DoctorId;
-               app.PatientId=appointment.PatientId;
+             //  app.PatientId=appointment.PatientId;
                 await _context.SaveChangesAsync();
                 return true;
             }

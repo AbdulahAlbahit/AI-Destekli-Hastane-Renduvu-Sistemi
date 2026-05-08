@@ -14,7 +14,7 @@ namespace Business_Layer.Dto
         public TimeOnly TheTime { get; set; }
         public string TheStatus { get; set; }
         public int DoctorId { get; set; }
-        public int PatientId { get; set; }
+     //   public int PatientId { get; set; }
         public int ClinicId { get; set; }
     }
     }
