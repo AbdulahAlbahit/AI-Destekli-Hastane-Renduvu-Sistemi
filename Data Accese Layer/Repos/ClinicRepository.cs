@@ -1,4 +1,5 @@
 ﻿using Data_Accese_Layer.Dto;
+using Data_Accese_Layer.Entities;
 using Data_Accese_Layer.IRepos;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -54,5 +55,7 @@ namespace Data_Accese_Layer.Repos
 
             return list;
         }
+
+       
     }
 }
