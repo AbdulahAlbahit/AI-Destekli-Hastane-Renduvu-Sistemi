@@ -27,7 +27,17 @@ namespace Data_Accese_Layer.Dto
             return departments;
         }
 
-      
-        
+        public async Task<DeptDetailDto> GetDepByName(string name)
+        {
+          var dep= await _context.Departments.Select(a => new DeptDetailDto
+            {
+                DeptName = a.DeptName,
+                DeptId = a.DeptId
+            }
+                ).FirstOrDefaultAsync(a => a.DeptName == name);
+
+            return dep;
+
+        }
     }
 }

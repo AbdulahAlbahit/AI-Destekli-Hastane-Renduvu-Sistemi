@@ -37,7 +37,7 @@ namespace Api_Layer.Controllers
             };
            
             var User=await _userService.CheckUser(user);
-            var patient = _patientService.GetPatient(User.Id);
+            var patient = _patientService.GetPatient(User.Id).Result;
             if(User!=null)
             {
 
@@ -53,7 +53,7 @@ namespace Api_Layer.Controllers
                     ),
                     Subject=new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.NameIdentifier,patient.Id.ToString())
+                        new Claim(ClaimTypes.NameIdentifier,patient.PatientId.ToString())
                       
                     })
                 };

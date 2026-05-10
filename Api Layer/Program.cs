@@ -1,5 +1,6 @@
 using Api_Layer.topla;
 using Business_Layer;
+using Business_Layer.IServices;
 using Business_Layer.Services;
 using Data_Accese_Layer;
 using Data_Accese_Layer.Entities;
@@ -20,7 +21,7 @@ namespace Api_Layer
             builder.Services.AddBusinessServices();
 
             builder.Services.AddAutoMapper(typeof(MappingProfile));
-            
+            builder.Services.AddHttpClient();
             
             builder.Services.AddControllers()
                 .AddJsonOptions(options => {
@@ -54,7 +55,7 @@ namespace Api_Layer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddControllers();
-
+           
             //.AddJsonOptions(
             //    options =>
             //    {

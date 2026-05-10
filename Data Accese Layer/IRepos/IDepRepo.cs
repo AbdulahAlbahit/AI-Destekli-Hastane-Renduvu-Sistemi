@@ -7,6 +7,7 @@ namespace Data_Accese_Layer.IRepos
     public interface IDepRepo
     {
         Task<List<DeptDetailDto>> GetAllDepartmentsAsync();
+        Task<DeptDetailDto> GetDepByName(string name);
       
     }
 }
