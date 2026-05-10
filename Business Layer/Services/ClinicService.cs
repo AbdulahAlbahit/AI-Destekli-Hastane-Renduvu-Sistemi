@@ -1,5 +1,6 @@
 ﻿using Business_Layer.IServices;
 using Data_Accese_Layer.Dto;
+using Data_Accese_Layer.Entities;
 using Data_Accese_Layer.IRepos;
 using Data_Accese_Layer.Repos;
 using System;
@@ -22,6 +23,8 @@ namespace Business_Layer.Services
         {
             return await _clinicRepository.GetAllClinicsAsync();
         }
+
+       
 
         public async Task<List<ClinicDetailDto>> GetClinicByDepId(int DepId)
         {

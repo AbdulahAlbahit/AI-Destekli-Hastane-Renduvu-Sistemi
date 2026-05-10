@@ -16,6 +16,7 @@ namespace Business_Layer
                 services.AddScoped<IDepService,DepService>();
                 services.AddScoped<IPatientService, PatientService> ();
                 services.AddScoped<IUserService, UserService> ();
+            services.AddScoped<IGeminiService,GiminiService>();
                 // Yarın öbür gün DoktorService, PatientService gelirse onları da buraya eklersin:
                 // services.AddScoped<IDoctorService, DoctorService>();
 

@@ -26,5 +26,10 @@ namespace Business_Layer.Services
             return await _deprepo.GetAllDepartmentsAsync();
                 
         }
+
+        public async Task<DeptDetailDto> GetDepByName(string name)
+        {
+            return await _deprepo.GetDepByName(name) ;
+        }
     }
 }

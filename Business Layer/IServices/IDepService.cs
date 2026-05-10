@@ -5,5 +5,6 @@ namespace Business_Layer.IServices
     public interface IDepService
     {
         Task<List<DeptDetailDto>> GetAllDepartmentsAsync();
+        Task<DeptDetailDto> GetDepByName(string name);
     }
 }
