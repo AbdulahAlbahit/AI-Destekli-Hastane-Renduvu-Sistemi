@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedRandevu — Randevu Al</title>
+  <meta name="description" content="Bölüm, klinik ve doktor seçerek randevu oluşturun.">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/tr.js"></script>
+</head>
+<body>
+
+  <!-- ═══ Sidebar ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>
+        <span class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        MedRandevu
+      </h1>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-nav-label">Ana Menü</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ana Sayfa
+      </a>
+      <a href="book.html" class="sidebar-link active">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Randevu Al
+      </a>
+      <a href="appointments.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Randevularım
+      </a>
+      <a href="departments.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+        Bölümler
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">H</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Hasta</div>
+          <div class="sidebar-user-role">Hasta</div>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost btn-icon" title="Çıkış Yap" style="color: var(--clr-danger);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ Main Content ═══ -->
+  <main class="main-content">
+
+    <div class="page-header">
+      <h1 class="page-title">Randevu Al</h1>
+      <p class="page-subtitle">Adım adım bölüm, klinik, doktor ve tarih seçerek randevunuzu oluşturun.</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="stepper" id="stepper">
+      <div class="stepper-step active" data-step="1">
+        <div class="stepper-circle">1</div>
+        <span class="stepper-label">Bölüm</span>
+      </div>
+      <div class="stepper-step" data-step="2">
+        <div class="stepper-circle">2</div>
+        <span class="stepper-label">Klinik</span>
+      </div>
+      <div class="stepper-step" data-step="3">
+        <div class="stepper-circle">3</div>
+        <span class="stepper-label">Doktor</span>
+      </div>
+      <div class="stepper-step" data-step="4">
+        <div class="stepper-circle">4</div>
+        <span class="stepper-label">Tarih & Saat</span>
+      </div>
+    </div>
+
+    <!-- Step Contents -->
+    <!-- Step 1: Department -->
+    <div class="wizard-content" id="step-1">
+      <h3 style="margin-bottom: var(--sp-5);">Bölüm Seçin</h3>
+      <div class="selection-grid" id="dept-grid">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+    </div>
+
+    <!-- Step 2: Clinic -->
+    <div class="wizard-content" id="step-2" style="display: none;">
+      <h3 style="margin-bottom: var(--sp-5);">Klinik Seçin</h3>
+      <div class="selection-grid" id="clinic-grid"></div>
+    </div>
+
+    <!-- Step 3: Doctor -->
+    <div class="wizard-content" id="step-3" style="display: none;">
+      <h3 style="margin-bottom: var(--sp-5);">Doktor Seçin</h3>
+      <div class="selection-grid" id="doctor-grid" style="grid-template-columns: repeat(2, 1fr);"></div>
+    </div>
+
+    <!-- Step 4: Date & Time -->
+    <div class="wizard-content" id="step-4" style="display: none;">
+      <h3 style="margin-bottom: var(--sp-5);">Tarih ve Saat Seçin</h3>
+      <div class="datetime-picker">
+        <div class="form-group">
+          <label class="form-label" for="date-input">Tarih <span class="required">*</span></label>
+          <input type="date" class="form-input" id="date-input" lang="en-US" style="direction: ltr; font-family: sans-serif;">
+          <span class="form-hint">Bugünden sonraki bir tarih seçin</span>
+        </div>
+        <div>
+          <label class="form-label">Saat <span class="required">*</span></label>
+          <div class="time-slots" id="time-slots">
+            <div class="time-slot" data-time="09:00">09:00</div>
+            <div class="time-slot" data-time="09:30">09:30</div>
+            <div class="time-slot" data-time="10:00">10:00</div>
+            <div class="time-slot" data-time="10:30">10:30</div>
+            <div class="time-slot" data-time="11:00">11:00</div>
+            <div class="time-slot" data-time="11:30">11:30</div>
+            <div class="time-slot" data-time="13:00">13:00</div>
+            <div class="time-slot" data-time="13:30">13:30</div>
+            <div class="time-slot" data-time="14:00">14:00</div>
+            <div class="time-slot" data-time="14:30">14:30</div>
+            <div class="time-slot" data-time="15:00">15:00</div>
+            <div class="time-slot" data-time="15:30">15:30</div>
+            <div class="time-slot" data-time="16:00">16:00</div>
+            <div class="time-slot" data-time="16:30">16:30</div>
+            <div class="time-slot" data-time="17:00">17:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wizard Navigation -->
+    <div class="wizard-actions" id="wizard-actions">
+      <button class="btn btn-ghost" id="prev-btn" style="display: none;">
+        ← Geri
+      </button>
+      <div></div>
+      <button class="btn btn-primary" id="next-btn">
+        İleri →
+      </button>
+    </div>
+
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth();
+    initSidebar();
+
+    // ── State ──
+    let currentStep = 1;
+    const totalSteps = 4;
+    const selection = {
+      departmentId: null,
+      departmentName: null,
+      clinicId: null,
+      clinicNumber: null,
+      doctorId: null,
+      doctorName: null,
+      date: null,
+      time: null,
+    };
+
+    const deptEmojis = ['🫀', '🦴', '🧠', '👁️', '🦷', '👶', '🫁', '🩻', '💊', '🏥', '🩺', '❤️'];
+
+    // ── Elements ──
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    // ── Step Navigation ──
+    function goToStep(step) {
+      // Hide all steps
+      for (let i = 1; i <= totalSteps; i++) {
+        document.getElementById(`step-${i}`).style.display = i === step ? 'block' : 'none';
+      }
+
+      // Update stepper UI
+      document.querySelectorAll('.stepper-step').forEach((el) => {
+        const s = parseInt(el.dataset.step);
+        el.classList.remove('active', 'completed');
+        if (s < step) el.classList.add('completed');
+        if (s === step) el.classList.add('active');
+      });
+
+      // Update nav buttons
+      prevBtn.style.display = step > 1 ? 'inline-flex' : 'none';
+
+      if (step === totalSteps) {
+        nextBtn.textContent = 'Randevuyu Oluştur ✓';
+        nextBtn.classList.remove('btn-primary');
+        nextBtn.classList.add('btn-success');
+      } else {
+        nextBtn.textContent = 'İleri →';
+        nextBtn.classList.remove('btn-success');
+        nextBtn.classList.add('btn-primary');
+      }
+
+      currentStep = step;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) goToStep(currentStep - 1);
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Flatpickr for Appointment Date
+      const dateInput = document.getElementById('date-input');
+      if (dateInput && typeof flatpickr !== 'undefined') {
+        flatpickr(dateInput, {
+          locale: "tr",
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: "true"
+        });
+      }
+
+      await loadDepartments();
+    });
+
+    nextBtn.addEventListener('click', async () => {
+      if (currentStep < totalSteps) {
+        // Validate current step
+        if (currentStep === 1 && !selection.departmentId) {
+          showToast('Lütfen bir bölüm seçin.', 'warning');
+          return;
+        }
+        if (currentStep === 2 && !selection.clinicId) {
+          showToast('Lütfen bir klinik seçin.', 'warning');
+          return;
+        }
+        if (currentStep === 3 && !selection.doctorId) {
+          showToast('Lütfen bir doktor seçin.', 'warning');
+          return;
+        }
+
+        // Load next step data
+        if (currentStep === 1) await loadClinics();
+        if (currentStep === 2) await loadDoctors();
+
+        goToStep(currentStep + 1);
+      } else {
+        // Submit appointment
+        await createAppointment();
+      }
+    });
+
+    // ── Step 1: Load Departments ──
+    async function loadDepartments() {
+      try {
+        const result = await DepartmentAPI.getAll();
+        if (result.ok && result.data) {
+          const grid = document.getElementById('dept-grid');
+          grid.innerHTML = result.data.map((dept, i) => `
+            <div class="selection-card card-clickable" data-id="${dept.deptId}" data-name="${dept.deptName}">
+              <div class="card-icon">${deptEmojis[i % deptEmojis.length]}</div>
+              <h4>${dept.deptName}</h4>
+            </div>
+          `).join('');
+
+          // Click handler
+          grid.querySelectorAll('.selection-card').forEach((card) => {
+            card.addEventListener('click', () => {
+              grid.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
+              card.classList.add('selected');
+              selection.departmentId = parseInt(card.dataset.id);
+              selection.departmentName = card.dataset.name;
+            });
+          });
+        }
+      } catch (err) {
+        showToast('Bölümler yüklenemedi: ' + err.message, 'danger');
+      }
+    }
+
+    // ── Step 2: Load Clinics ──
+    async function loadClinics() {
+      const grid = document.getElementById('clinic-grid');
+      grid.innerHTML = '<div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>';
+
+      try {
+        const result = await ClinicAPI.getByDepId(selection.departmentId);
+        if (result.ok && result.data && result.data.length > 0) {
+          grid.innerHTML = result.data.map((clinic) => `
+            <div class="selection-card card-clickable" data-id="${clinic.clinicId}" data-num="${clinic.clinicNumber}">
+              <div class="card-icon">🏥</div>
+              <h4>Klinik ${clinic.clinicNumber}</h4>
+              <p>${selection.departmentName}</p>
+            </div>
+          `).join('');
+
+          grid.querySelectorAll('.selection-card').forEach((card) => {
+            card.addEventListener('click', () => {
+              grid.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
+              card.classList.add('selected');
+              selection.clinicId = parseInt(card.dataset.id);
+              selection.clinicNumber = parseInt(card.dataset.num);
+            });
+          });
+        } else {
+          grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">
+            <div class="empty-state-icon">🏥</div>
+            <div class="empty-state-title">Klinik bulunamadı</div>
+            <div class="empty-state-desc">Bu bölüme ait aktif klinik bulunmuyor.</div>
+          </div>`;
+        }
+      } catch (err) {
+        showToast('Klinikler yüklenemedi: ' + err.message, 'danger');
+      }
+    }
+
+    // ── Step 3: Load Doctors ──
+    async function loadDoctors() {
+      const grid = document.getElementById('doctor-grid');
+      grid.innerHTML = '<div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>';
+
+      try {
+        const result = await DoctorAPI.getByClinicId(selection.clinicId);
+        if (result.ok && result.data && result.data.length > 0) {
+          grid.innerHTML = result.data.map((doc) => `
+            <div class="selection-card card-clickable doctor-card" data-id="${doc.doctorId}" data-name="${doc.doctorName}">
+              <div class="doctor-avatar">${doc.doctorName.charAt(0)}</div>
+              <div class="doctor-info">
+                <h4>${doc.doctorName}</h4>
+                <p>${doc.specialization}</p>
+                <p style="margin-top: 4px;">📧 ${doc.email || '—'} &nbsp; 📞 ${doc.phone}</p>
+              </div>
+            </div>
+          `).join('');
+
+          grid.querySelectorAll('.selection-card').forEach((card) => {
+            card.addEventListener('click', () => {
+              grid.querySelectorAll('.selection-card').forEach(c => c.classList.remove('selected'));
+              card.classList.add('selected');
+              selection.doctorId = parseInt(card.dataset.id);
+              selection.doctorName = card.dataset.name;
+            });
+          });
+        } else {
+          grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">
+            <div class="empty-state-icon">🩺</div>
+            <div class="empty-state-title">Doktor bulunamadı</div>
+            <div class="empty-state-desc">Bu klinikte aktif doktor bulunmuyor.</div>
+          </div>`;
+        }
+      } catch (err) {
+        showToast('Doktorlar yüklenemedi: ' + err.message, 'danger');
+      }
+    }
+
+    // ── Step 4: Date & Time ──
+    const dateInput = document.getElementById('date-input');
+    const today = new Date();
+    dateInput.min = today.toISOString().split('T')[0];
+
+    // Time slot selection
+    document.getElementById('time-slots').addEventListener('click', async (e) => {
+      const slot = e.target.closest('.time-slot');
+      if (!slot || slot.classList.contains('unavailable')) return;
+
+      document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+      slot.classList.add('selected');
+      selection.time = slot.dataset.time;
+    });
+
+    // When date changes, check availability for all time slots
+    dateInput.addEventListener('change', async () => {
+      selection.date = dateInput.value;
+      const slots = document.querySelectorAll('.time-slot');
+
+      for (const slot of slots) {
+        slot.classList.remove('unavailable', 'selected');
+      }
+
+      if (!selection.date) return;
+
+      // Check each time slot availability
+      for (const slot of slots) {
+        try {
+          const result = await AppointmentAPI.checkAvailability(selection.date, slot.dataset.time);
+          if (!result.ok || result.data === false) {
+            slot.classList.add('unavailable');
+          }
+        } catch {
+          // If check fails, keep slot available
+        }
+      }
+    });
+
+    // ── Create Appointment ──
+    async function createAppointment() {
+      if (!selection.date) {
+        showToast('Lütfen bir tarih seçin.', 'warning');
+        return;
+      }
+      if (!selection.time) {
+        showToast('Lütfen bir saat seçin.', 'warning');
+        return;
+      }
+
+      setButtonLoading(nextBtn, true);
+
+      try {
+        const appointmentData = {
+          TheDate: selection.date,
+          TheTime: selection.time,
+          TheStatus: 'Beklemede',
+          DoctorId: selection.doctorId,
+          ClinicId: selection.clinicId,
+        };
+
+        const result = await AppointmentAPI.create(appointmentData);
+        if (result.ok) {
+          showToast('Randevunuz başarıyla oluşturuldu!', 'success');
+          setTimeout(() => {
+            window.location.href = 'appointments.html';
+          }, 1500);
+        } else {
+          showToast(result.data || 'Randevu oluşturulamadı.', 'danger');
+        }
+      } catch (err) {
+        showToast(err.message, 'danger');
+      } finally {
+        setButtonLoading(nextBtn, false);
+      }
+    }
+
+    // ── Init ──
+    loadDepartments();
+  </script>
+
+</body>
+</html>

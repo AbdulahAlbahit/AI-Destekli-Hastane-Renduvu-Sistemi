@@ -1,4 +1,4 @@
-﻿using Api_Layer.topla;
+using Api_Layer.topla;
 using Business_Layer.IServices;
 using Business_Layer.Services;
 using Data_Accese_Layer.Entities;
@@ -37,10 +37,9 @@ namespace Api_Layer.Controllers
             };
            
             var User=await _userService.CheckUser(user);
-            var patient = _patientService.GetPatient(User.Id).Result;
+            
             if(User!=null)
             {
-
                 var handler = new JwtSecurityTokenHandler();
 
                 var Descriptor = new SecurityTokenDescriptor
@@ -48,13 +47,14 @@ namespace Api_Layer.Controllers
                     Issuer = _jwt.Issuer,
                     Audience = _jwt.Audience,
                     
-                    SigningCredentials = new SigningCredentials(new  SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SigningKey)),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SigningKey)),
                     SecurityAlgorithms.HmacSha256
                     ),
                     Subject=new ClaimsIdentity(new Claim[]
                     {
-                        new Claim(ClaimTypes.NameIdentifier,patient.PatientId.ToString())
-                      
+                        // JWT'ye PatientId yerine sistemin geneliyle uyumlu olması için doğrudan User.Id basılıyor.
+                        // Böylece Patient kaydı olmasa da (yeni hesap) giriş yaparken çökmez.
+                        new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
                     })
                 };
 

@@ -1,4 +1,4 @@
-﻿using Data_Accese_Layer.Dto;
+using Data_Accese_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -69,7 +69,7 @@ namespace Data_Accese_Layer.Repos
             return appoint;
         }
 
-        public async Task<bool> AddAppointment(Appointment  appointment)
+        public async Task<bool> AddAppointment(Appointment appointment)
         {
           
             if (appointment != null) { 
@@ -94,7 +94,7 @@ namespace Data_Accese_Layer.Repos
         }
 
 
-        public async Task <AppointmentDetailDto> GetAppointmentByUserId(int userId)
+        public async Task <List<AppointmentDetailDto>> GetAppointmentByUserId(int userId)
         {
             var app = await _context.Appointments.Where(a => a.Patient.UserId == userId).Select(a => new AppointmentDetailDto
             {
@@ -110,24 +110,42 @@ namespace Data_Accese_Layer.Repos
                 PatientGender = a.Patient.Gender,
                 PatientPhone = a.Patient.Phone,
 
-            }).FirstOrDefaultAsync();
+            }).ToListAsync();
 
             return app;
 
         }
 
      
-        public async Task<bool>  UpdateAppointment(Appointment appointment, int appointmentid)
+        public async Task<bool> UpdateAppointment(Appointment appointment, int appointmentid)
         {
-            var app=_context.Appointments.SingleOrDefault(c=>c.AppointmentId == appointmentid);
+            var app = await _context.Appointments.SingleOrDefaultAsync(c => c.AppointmentId == appointmentid);
             if (app != null)
             {
-               app.TheTime=appointment.TheTime;
-               app.TheDate=appointment.TheDate;
-               app.TheStatus=appointment.TheStatus;
-               app.ClinicId=appointment.ClinicId;
-               app.DoctorId=appointment.DoctorId;
-             //  app.PatientId=appointment.PatientId;
+               var docId = (appointment.DoctorId != 0 && appointment.DoctorId != null) ? appointment.DoctorId : app.DoctorId;
+               
+               // Aynı doktora ait, aynı tarih ve saatte başka bir randevu var mı kontrol et (kendisi hariç)
+               bool isConflict = await _context.Appointments.AnyAsync(a => 
+                   a.DoctorId == docId && 
+                   a.TheDate == appointment.TheDate && 
+                   a.TheTime == appointment.TheTime && 
+                   a.AppointmentId != appointmentid);
+
+               if (isConflict)
+               {
+                   throw new InvalidOperationException("Bu doktorun seçtiğiniz tarih ve saatte başka bir randevusu bulunmaktadır.");
+               }
+
+               app.TheTime = appointment.TheTime;
+               app.TheDate = appointment.TheDate;
+               app.TheStatus = appointment.TheStatus;
+               if (appointment.ClinicId != 0 && appointment.ClinicId != null)
+                   app.ClinicId = appointment.ClinicId;
+               
+               if (appointment.DoctorId != 0 && appointment.DoctorId != null)
+                   app.DoctorId = appointment.DoctorId;
+                   
+               // app.PatientId=appointment.PatientId;
                 await _context.SaveChangesAsync();
                 return true;
             }

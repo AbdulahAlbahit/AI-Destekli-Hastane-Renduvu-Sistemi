@@ -1,4 +1,4 @@
-﻿using Business_Layer.Dto;
+using Business_Layer.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +9,7 @@ namespace Business_Layer.IServices
     public interface IGeminiService
     {
         Task<GeminiResultDto> GetAiSuggestionAsync(string userPrompt);
-        Task<Appointment> HandleAiRequest(string userText, int PatientId);
+        Task<Appointment> HandleAiRequest(GeminiResultDto aiResult, int PatientId);
 
     }
 }

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedRandevu — Randevularım</title>
+  <meta name="description" content="Randevularınızı görüntüleyin, düzenleyin veya iptal edin.">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/tr.js"></script>
+</head>
+<body>
+
+  <!-- ═══ Sidebar ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>
+        <span class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        MedRandevu
+      </h1>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-nav-label">Ana Menü</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ana Sayfa
+      </a>
+      <a href="book.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Randevu Al
+      </a>
+      <a href="appointments.html" class="sidebar-link active">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Randevularım
+      </a>
+      <a href="departments.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+        Bölümler
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">H</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Hasta</div>
+          <div class="sidebar-user-role">Hasta</div>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost btn-icon" title="Çıkış Yap" style="color: var(--clr-danger);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ Main Content ═══ -->
+  <main class="main-content">
+
+    <div class="appointments-header">
+      <div>
+        <h1 class="page-title">Randevularım</h1>
+        <p class="page-subtitle">Mevcut randevularınızı görüntüleyin ve yönetin.</p>
+      </div>
+      <a href="book.html" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Yeni Randevu
+      </a>
+    </div>
+
+    <!-- Appointment Content -->
+    <div id="appointment-content">
+      <!-- Loading skeleton -->
+      <div class="data-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Doktor</th>
+              <th>Bölüm</th>
+              <th>Klinik</th>
+              <th>Tarih</th>
+              <th>Saat</th>
+              <th>Durum</th>
+              <th>İşlemler</th>
+            </tr>
+          </thead>
+          <tbody id="appointments-body">
+            <tr>
+              <td colspan="7" style="text-align: center; padding: var(--sp-8);">
+                <div class="skeleton skeleton-text" style="width: 200px; margin: 0 auto;"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ═══ Delete Confirmation Modal ═══ -->
+  <div class="modal-backdrop" id="delete-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Randevu İptali</h3>
+        <button class="modal-close" onclick="closeModal('delete-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Bu randevuyu iptal etmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('delete-modal')">Vazgeç</button>
+        <button class="btn btn-danger" id="confirm-delete-btn">Randevuyu İptal Et</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Edit Modal ═══ -->
+  <div class="modal-backdrop" id="edit-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Randevu Düzenle</h3>
+        <button class="modal-close" onclick="closeModal('edit-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form" class="auth-form">
+          <div class="form-group">
+            <label class="form-label" for="edit-date">Yeni Tarih</label>
+            <input type="date" class="form-input" id="edit-date" lang="en-US" style="direction: ltr; font-family: sans-serif;">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-time">Yeni Saat</label>
+            <input type="time" class="form-input" id="edit-time">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-status">Durum</label>
+            <input type="text" class="form-input" id="edit-status" disabled>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('edit-modal')">Vazgeç</button>
+        <button class="btn btn-primary" id="confirm-edit-btn">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth();
+    initSidebar();
+
+    let deleteTargetId = null;
+    let editTargetId = null;
+    let editTargetData = null;
+
+    // ── Load appointments ──
+    async function loadAppointments() {
+      const tbody = document.getElementById('appointments-body');
+
+      try {
+        const result = await AppointmentAPI.getMyAppointment();
+        if (result.ok && result.data) {
+          const apps = result.data;
+          if (Array.isArray(apps) && apps.length > 0) {
+            tbody.innerHTML = apps.map(app => renderAppointmentRow(app)).join('');
+          } else {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state">
+                    <div class="empty-state-icon">📅</div>
+                    <div class="empty-state-title">Henüz randevunuz yok</div>
+                    <div class="empty-state-desc">Yeni bir randevu oluşturmak için aşağıdaki butona tıklayın.</div>
+                    <a href="book.html" class="btn btn-primary">Randevu Al</a>
+                  </div>
+                </td>
+              </tr>
+            `;
+          }
+        } else {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-state-icon">📅</div>
+                  <div class="empty-state-title">Henüz randevunuz yok</div>
+                  <div class="empty-state-desc">Yeni bir randevu oluşturmak için aşağıdaki butona tıklayın.</div>
+                  <a href="book.html" class="btn btn-primary">Randevu Al</a>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+      } catch (err) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: var(--sp-8); color: var(--clr-danger);">
+              Randevular yüklenirken hata oluştu: ${err.message}
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderAppointmentRow(app) {
+      return `
+        <tr>
+          <td>
+            <div style="display: flex; align-items: center; gap: var(--sp-3);">
+              <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--clr-secondary), var(--clr-secondary-light)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.8rem; flex-shrink: 0;">
+                ${(app.doctorName || 'D').charAt(0)}
+              </div>
+              <span style="font-weight: 500;">${app.doctorName || '—'}</span>
+            </div>
+          </td>
+          <td>${app.depName || '—'}</td>
+          <td>Klinik ${app.clinicNum || '—'}</td>
+          <td>${formatDate(app.theDate)}</td>
+          <td>${formatTime(app.theTime)}</td>
+          <td>${getStatusBadge(app.theStatus)}</td>
+          <td>
+            <div class="actions">
+              <button class="btn btn-ghost btn-sm" onclick="openEditModal(${app.appointmentId}, '${app.theDate}', '${app.theTime}', '${app.theStatus}')" title="Düzenle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="btn btn-ghost btn-sm" onclick="openDeleteModal(${app.appointmentId})" title="İptal Et" style="color: var(--clr-danger);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
+
+    // ── Delete ──
+    function openDeleteModal(id) {
+      deleteTargetId = id;
+      openModal('delete-modal');
+    }
+
+    document.getElementById('confirm-delete-btn').addEventListener('click', async () => {
+      if (!deleteTargetId) return;
+
+      const btn = document.getElementById('confirm-delete-btn');
+      setButtonLoading(btn, true);
+
+      try {
+        const result = await AppointmentAPI.remove(deleteTargetId);
+        if (result.ok) {
+          showToast('Randevu başarıyla iptal edildi.', 'success');
+          closeModal('delete-modal');
+          loadAppointments();
+        } else {
+          showToast(result.data || 'Randevu iptal edilemedi.', 'danger');
+        }
+      } catch (err) {
+        showToast(err.message, 'danger');
+      } finally {
+        setButtonLoading(btn, false);
+      }
+    });
+
+    // ── Edit ──
+    function openEditModal(id, date, time, status) {
+      editTargetId = id;
+      document.getElementById('edit-date').value = date || '';
+      document.getElementById('edit-time').value = time ? time.substring(0, 5) : '';
+      document.getElementById('edit-status').value = status || 'Beklemede';
+      openModal('edit-modal');
+    }
+
+    document.getElementById('confirm-edit-btn').addEventListener('click', async () => {
+      if (!editTargetId) return;
+
+      const btn = document.getElementById('confirm-edit-btn');
+      const newDate = document.getElementById('edit-date').value;
+      const newTime = document.getElementById('edit-time').value;
+      const newStatus = document.getElementById('edit-status').value;
+
+      if (!newDate || !newTime) {
+        showToast('Tarih ve saat zorunludur.', 'warning');
+        return;
+      }
+
+      setButtonLoading(btn, true);
+
+      try {
+        const result = await AppointmentAPI.update(editTargetId, {
+          TheDate: newDate,
+          TheTime: newTime,
+          TheStatus: newStatus,
+          DoctorId: 0, // Will be preserved by backend
+          ClinicId: 0, // Will be preserved by backend
+        });
+
+        if (result.ok) {
+          showToast('Randevu başarıyla güncellendi.', 'success');
+          closeModal('edit-modal');
+          loadAppointments();
+        } else {
+          showToast(result.data || 'Randevu güncellenemedi.', 'danger');
+        }
+      } catch (err) {
+        showToast(err.message, 'danger');
+      } finally {
+        setButtonLoading(btn, false);
+      }
+    });
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', () => {
+      initSidebar();
+      loadAppointments();
+
+      // Initialize Flatpickr for Edit Date
+      const editDateInput = document.getElementById('edit-date');
+      if (editDateInput && typeof flatpickr !== 'undefined') {
+        flatpickr(editDateInput, {
+          locale: "tr",
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          disableMobile: "true"
+        });
+      }
+
+      // Initialize Flatpickr for Edit Time
+      const editTimeInput = document.getElementById('edit-time');
+      if (editTimeInput && typeof flatpickr !== 'undefined') {
+        flatpickr(editTimeInput, {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: "H:i",
+          time_24hr: true,
+          disableMobile: "true"
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿using Data_Accese_Layer.IRepos;
+using Data_Accese_Layer.IRepos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,8 +32,17 @@ namespace Data_Accese_Layer.Repos
         {
             var patient = await _context.Patients.FirstOrDefaultAsync(c => c.UserId == UserId);
             return patient;
+        }
 
-
+        public async Task<bool> UpdatePatient(Patient patient)
+        {
+            if (patient != null)
+            {
+                _context.Patients.Update(patient);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
     }

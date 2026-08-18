@@ -11,10 +11,10 @@ using Xunit;
 
 namespace Sistem.Test
 {
-    public class UnitTest1
+    public class LogControllerTests
     {
         [Fact]
-        public async Task GenerateToken_ValidUser_ReturnsString()
+        public async Task Authentication_ValidUser_ReturnsString()
         {
           
             var options = new JwtOptions

@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data Accese Layer\Data Accese Layer.csproj" />
+    <ProjectReference Include="..\Data Accese Layer\Data Access Layer.csproj" />
   </ItemGroup>
 
 </Project>
