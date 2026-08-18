@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedRandevu — Bölümler</title>
+  <meta name="description" content="Hastane bölümlerini, klinikleri ve doktorları keşfedin.">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <!-- ═══ Sidebar ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>
+        <span class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        MedRandevu
+      </h1>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-nav-label">Ana Menü</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ana Sayfa
+      </a>
+      <a href="book.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Randevu Al
+      </a>
+      <a href="appointments.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Randevularım
+      </a>
+      <a href="departments.html" class="sidebar-link active">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+        Bölümler
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">H</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Hasta</div>
+          <div class="sidebar-user-role">Hasta</div>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost btn-icon" title="Çıkış Yap" style="color: var(--clr-danger);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ Main Content ═══ -->
+  <main class="main-content">
+
+    <div class="page-header">
+      <h1 class="page-title">Bölümler & Doktorlar</h1>
+      <p class="page-subtitle">Hastanemizin bölümlerini, kliniklerini ve doktorlarını keşfedin.</p>
+    </div>
+
+    <!-- Department Grid -->
+    <div class="dept-grid" id="dept-grid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+
+    <!-- Clinic Detail Panel (hidden initially) -->
+    <div class="detail-panel" id="clinic-panel" style="display: none;">
+      <div class="detail-panel-header">
+        <h3 id="clinic-panel-title">Klinikler</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeClinicPanel()">✕ Kapat</button>
+      </div>
+      <div class="detail-list" id="clinic-list"></div>
+    </div>
+
+    <!-- Doctor Detail Panel (hidden initially) -->
+    <div class="detail-panel" id="doctor-panel" style="display: none;">
+      <div class="detail-panel-header">
+        <h3 id="doctor-panel-title">Doktorlar</h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeDoctorPanel()">✕ Kapat</button>
+      </div>
+      <div class="detail-list" id="doctor-list"></div>
+    </div>
+
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth();
+    initSidebar();
+
+    const deptColors = [
+      'linear-gradient(90deg, #C2603F, #E8A88E)',
+      'linear-gradient(90deg, #2D5F3E, #6BA37E)',
+      'linear-gradient(90deg, #5B8DB8, #8FBEE0)',
+      'linear-gradient(90deg, #E8A838, #F0C87A)',
+      'linear-gradient(90deg, #D94F4F, #E88A8A)',
+      'linear-gradient(90deg, #7B5EA7, #B09AD0)',
+    ];
+
+    const deptEmojis = ['🫀', '🦴', '🧠', '👁️', '🦷', '👶', '🫁', '🩻', '💊', '🏥'];
+
+    // ── Load Departments ──
+    async function loadDepartments() {
+      try {
+        const result = await DepartmentAPI.getAll();
+        if (result.ok && result.data) {
+          const grid = document.getElementById('dept-grid');
+          grid.innerHTML = result.data.map((dept, i) => `
+            <div class="dept-card" onclick="loadClinicsForDept(${dept.deptId}, '${dept.deptName}')">
+              <div class="dept-card-color" style="background: ${deptColors[i % deptColors.length]};"></div>
+              <div class="dept-card-body">
+                <h4>${deptEmojis[i % deptEmojis.length]} ${dept.deptName}</h4>
+                <p>Klinikleri ve doktorları görüntülemek için tıklayın</p>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        showToast('Bölümler yüklenemedi: ' + err.message, 'danger');
+      }
+    }
+
+    // ── Load Clinics for a Department ──
+    async function loadClinicsForDept(depId, depName) {
+      const panel = document.getElementById('clinic-panel');
+      const list = document.getElementById('clinic-list');
+      const title = document.getElementById('clinic-panel-title');
+
+      title.textContent = `${depName} — Klinikler`;
+      panel.style.display = 'block';
+      list.innerHTML = '<div class="skeleton skeleton-card"></div>';
+
+      // Close doctor panel
+      closeDoctorPanel();
+
+      try {
+        const result = await ClinicAPI.getByDepId(depId);
+        if (result.ok && result.data && result.data.length > 0) {
+          list.innerHTML = result.data.map((clinic) => `
+            <div class="card card-clickable" onclick="loadDoctorsForClinic(${clinic.clinicId}, '${clinic.clinicNumber}', '${depName}')">
+              <div style="display: flex; align-items: center; gap: var(--sp-3);">
+                <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background-color: var(--clr-primary-bg); color: var(--clr-primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🏥</div>
+                <div>
+                  <div style="font-weight: 600;">Klinik ${clinic.clinicNumber}</div>
+                  <div style="font-size: 0.8rem; color: var(--clr-text-muted);">${depName}</div>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          list.innerHTML = '<p style="color: var(--clr-text-muted); text-align: center; padding: var(--sp-6);">Bu bölümde klinik bulunamadı.</p>';
+        }
+      } catch (err) {
+        list.innerHTML = '<p style="color: var(--clr-danger);">Yüklenirken hata oluştu.</p>';
+      }
+
+      // Smooth scroll to panel
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeClinicPanel() {
+      document.getElementById('clinic-panel').style.display = 'none';
+      closeDoctorPanel();
+    }
+
+    // ── Load Doctors for a Clinic ──
+    async function loadDoctorsForClinic(clinicId, clinicNum, depName) {
+      const panel = document.getElementById('doctor-panel');
+      const list = document.getElementById('doctor-list');
+      const title = document.getElementById('doctor-panel-title');
+
+      title.textContent = `Klinik ${clinicNum} — Doktorlar`;
+      panel.style.display = 'block';
+      list.innerHTML = '<div class="skeleton skeleton-card"></div>';
+
+      try {
+        const result = await DoctorAPI.getByClinicId(clinicId);
+        if (result.ok && result.data && result.data.length > 0) {
+          list.innerHTML = result.data.map((doc) => `
+            <div class="card">
+              <div style="display: flex; align-items: center; gap: var(--sp-4);">
+                <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--clr-secondary), var(--clr-secondary-light)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; flex-shrink: 0;">
+                  ${doc.doctorName.charAt(0)}
+                </div>
+                <div style="flex: 1;">
+                  <div style="font-weight: 600; font-size: 1rem;">${doc.doctorName}</div>
+                  <div style="font-size: 0.85rem; color: var(--clr-text-secondary); margin-top: 2px;">${doc.specialization}</div>
+                  <div style="font-size: 0.8rem; color: var(--clr-text-muted); margin-top: 6px; display: flex; gap: var(--sp-4);">
+                    <span>📞 ${doc.phone}</span>
+                    <span>📧 ${doc.email || '—'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          list.innerHTML = '<p style="color: var(--clr-text-muted); text-align: center; padding: var(--sp-6);">Bu klinikte doktor bulunamadı.</p>';
+        }
+      } catch (err) {
+        list.innerHTML = '<p style="color: var(--clr-danger);">Yüklenirken hata oluştu.</p>';
+      }
+
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeDoctorPanel() {
+      document.getElementById('doctor-panel').style.display = 'none';
+    }
+
+    // ── Init ──
+    loadDepartments();
+  </script>
+
+</body>
+</html>

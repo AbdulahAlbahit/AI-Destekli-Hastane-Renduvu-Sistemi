@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedRandevu — Ana Sayfa</title>
+  <meta name="description" content="MedRandevu Dashboard — Randevularınızı yönetin, AI asistanıyla konuşun.">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/tr.js"></script>
+</head>
+<body>
+
+  <!-- ═══ Sidebar ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>
+        <span class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </span>
+        MedRandevu
+      </h1>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="sidebar-nav-label">Ana Menü</span>
+      <a href="dashboard.html" class="sidebar-link active">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ana Sayfa
+      </a>
+      <a href="book.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Randevu Al
+      </a>
+      <a href="appointments.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Randevularım
+      </a>
+      <a href="departments.html" class="sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg>
+        Bölümler
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar" id="user-avatar">H</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="user-name">Hasta</div>
+          <div class="sidebar-user-role">Hasta</div>
+        </div>
+        <button id="logout-btn" class="btn btn-ghost btn-icon" title="Çıkış Yap" style="color: var(--clr-danger);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ Main Content ═══ -->
+  <main class="main-content">
+
+    <!-- Greeting -->
+    <div class="dashboard-greeting animate-fade-in-up">
+      <h2>Hoş geldiniz, <span id="greeting-name">Hasta</span></h2>
+      <p>Sağlığınızla ilgili ihtiyaçlarınız için buradayız. Şikayetinizi AI asistanımıza anlatabilir veya manuel randevu alabilirsiniz.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card animate-fade-in-up" style="animation-delay: 100ms;">
+        <div class="stat-icon primary">📅</div>
+        <div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-label">Aktif Randevu</div>
+        </div>
+      </div>
+      <div class="stat-card animate-fade-in-up" style="animation-delay: 200ms;">
+        <div class="stat-icon success">🩺</div>
+        <div>
+          <div class="stat-value" id="stat-doctor">—</div>
+          <div class="stat-label">Doktorunuz</div>
+        </div>
+      </div>
+      <div class="stat-card animate-fade-in-up" style="animation-delay: 300ms;">
+        <div class="stat-icon warning">🕐</div>
+        <div>
+          <div class="stat-value" id="stat-date">—</div>
+          <div class="stat-label">Randevu Tarihi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Assistant Card -->
+    <div class="ai-card animate-fade-in-up" style="animation-delay: 400ms;">
+      <div class="ai-header" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+        <h3>AI Sağlık Asistanı</h3>
+      </div>
+      <p>Şikayetinizi yazın, yapay zeka size uygun bölümü önerse ya da otomatik randevu oluştursun. Örnek: "Başım çok ağrıyor ve ateşim var"</p>
+
+      <div class="ai-input-wrapper">
+        <input type="text" id="ai-input" placeholder="Şikayetinizi buraya yazın..." autocomplete="off">
+        <button class="ai-send-btn" id="ai-send-btn">
+          Gönder
+        </button>
+      </div>
+
+      <div class="ai-response" id="ai-response"></div>
+    </div>
+
+    <!-- Quick Actions -->
+    <h3 style="margin-bottom: var(--sp-5); animation: fadeInUp 400ms ease 500ms both;">Hızlı İşlemler</h3>
+    <div class="quick-actions">
+      <a href="book.html" class="quick-action-card animate-fade-in-up" style="animation-delay: 550ms;">
+        <div class="quick-action-icon" style="background-color: var(--clr-primary-bg); color: var(--clr-primary);">📅</div>
+        <h4>Randevu Al</h4>
+        <p>Bölüm, klinik ve doktor seçerek randevu oluşturun</p>
+      </a>
+      <a href="appointments.html" class="quick-action-card animate-fade-in-up" style="animation-delay: 650ms;">
+        <div class="quick-action-icon" style="background-color: var(--clr-success-bg); color: var(--clr-success);">📋</div>
+        <h4>Randevularım</h4>
+        <p>Mevcut randevularınızı görüntüleyin ve yönetin</p>
+      </a>
+      <a href="departments.html" class="quick-action-card animate-fade-in-up" style="animation-delay: 750ms;">
+        <div class="quick-action-icon" style="background-color: var(--clr-info-bg); color: var(--clr-info);">🏢</div>
+        <h4>Bölümler</h4>
+        <p>Hastane bölümlerini, klinikleri ve doktorları keşfedin</p>
+      </a>
+    </div>
+
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth();
+    initSidebar();
+
+    // ── Load user appointment data ──
+    async function loadDashboard() {
+      try {
+        const result = await AppointmentAPI.getMyAppointment();
+        if (result.ok && result.data) {
+          const apps = result.data;
+          if (Array.isArray(apps) && apps.length > 0) {
+            const app = apps[0];
+            document.getElementById('stat-total').textContent = apps.length.toString();
+            document.getElementById('stat-doctor').textContent = app.doctorName || '—';
+            document.getElementById('stat-date').textContent = app.theDate ? formatDate(app.theDate) : '—';
+          } else {
+            document.getElementById('stat-total').textContent = '0';
+            document.getElementById('stat-doctor').textContent = 'Yok';
+            document.getElementById('stat-date').textContent = 'Yok';
+          }
+        } else {
+          document.getElementById('stat-total').textContent = '0';
+          document.getElementById('stat-doctor').textContent = 'Yok';
+          document.getElementById('stat-date').textContent = 'Yok';
+        }
+      } catch (err) {
+        document.getElementById('stat-total').textContent = '0';
+        document.getElementById('stat-doctor').textContent = '—';
+        document.getElementById('stat-date').textContent = '—';
+      }
+    }
+
+    loadDashboard();
+
+    // ── AI Assistant ──
+    const aiInput = document.getElementById('ai-input');
+    const aiSendBtn = document.getElementById('ai-send-btn');
+    const aiResponse = document.getElementById('ai-response');
+
+    async function sendAiQuery() {
+      const complaint = aiInput.value.trim();
+      if (!complaint) {
+        showToast('Lütfen şikayetinizi yazın.', 'warning');
+        return;
+      }
+
+      aiSendBtn.textContent = 'Analiz ediliyor...';
+      aiSendBtn.disabled = true;
+      aiResponse.classList.remove('visible');
+
+      try {
+        const result = await AiAPI.analyze(complaint);
+        if (result.ok && result.data) {
+          const data = result.data;
+
+          if (data.status === 'Randevu Kaydedildi') {
+            // AI auto-booked
+            aiResponse.innerHTML = `
+              <strong>✅ Randevunuz Oluşturuldu!</strong><br><br>
+              AI asistanı şikayetinizi analiz etti ve otomatik olarak size bir randevu oluşturdu.
+              <br><br>
+              <a href="appointments.html" style="color: white; text-decoration: underline; font-weight: 600;">Randevumu Görüntüle →</a>
+            `;
+            showToast('AI randevunuzu otomatik olarak oluşturdu!', 'success');
+          } else {
+            // AI just analyzed
+            aiResponse.innerHTML = `
+              <strong>🔍 Analiz Sonucu</strong><br><br>
+              ${data.message || 'Şikayetiniz analiz edildi.'}
+            `;
+          }
+          aiResponse.classList.add('visible');
+        } else {
+          showToast('AI analizi başarısız oldu. Lütfen tekrar deneyin.', 'danger');
+        }
+      } catch (err) {
+        showToast(err.message, 'danger');
+      } finally {
+        aiSendBtn.textContent = 'Gönder';
+        aiSendBtn.disabled = false;
+      }
+    }
+
+    aiSendBtn.addEventListener('click', sendAiQuery);
+    aiInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendAiQuery();
+    });
+  </script>
+
+</body>
+</html>

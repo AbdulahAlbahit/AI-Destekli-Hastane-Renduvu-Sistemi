@@ -1,4 +1,4 @@
-﻿using Data_Accese_Layer.Dto;
+using Data_Accese_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,6 @@ namespace Data_Accese_Layer.IRepos
         Task<bool> UpdateAppointment(Appointment appointment,int id);
         Task<bool> DeleteAppointment(int id);
         public  Task<List<TheAppointmentTimes>> GetTheDates(DateOnly time);
-        Task<AppointmentDetailDto> GetAppointmentByUserId(int userId);
+        Task<List<AppointmentDetailDto>> GetAppointmentByUserId(int userId);
     }
 }

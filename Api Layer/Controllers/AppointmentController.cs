@@ -1,4 +1,4 @@
-﻿using Business_Layer.Dto;
+using Business_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Data_Accese_Layer.Dto;
@@ -31,19 +31,26 @@ namespace Api_Layer.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAppointment(AppointmentCreateDto appointment)
         {
-
-
             if (appointment == null)
                 return BadRequest("appointment bos olamaz");
             else
             {
-                
                 var app=_mapper.Map<Appointment>(appointment);
+                
+                // JWT token'daki Id aslında UserId'dir. Bize PatientId lazım.
+                var userId = int.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
+                var patient = _context.Patients.FirstOrDefault(p => p.UserId == userId);
+                
+                if (patient == null)
+                {
+                    return BadRequest("Randevu alabilmek için lütfen önce sol alt köşedeki profil sekmesinden bilgilerinizi kaydedin.");
+                }
 
+                app.PatientId = patient.PatientId;
                 await _appointmentService.AddAppointment(app);
             }
 
-            return Created();
+            return Ok();
         }
 
 
@@ -73,13 +80,13 @@ namespace Api_Layer.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<AppointmentDetailDto>> GetAppointmenForAuthenticatUser()
+        public async Task<ActionResult<List<AppointmentDetailDto>>> GetAppointmenForAuthenticatUser()
         {
             var userid = int.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
                
             var app=await _appointmentService.GetAppointmentByUserId(userid);
 
-            if(app == null)
+            if(app == null || app.Count == 0)
             {
                 return NotFound("Randevu bulunmadi");
 
@@ -104,15 +111,32 @@ namespace Api_Layer.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult>   UpdateAppointment(AppointmentCreateDto appointment,int id)
+        public async Task<ActionResult> UpdateAppointment(AppointmentCreateDto appointment, int id)
         {
-            
-            var app=_mapper.Map<Appointment>(appointment);
-            app.PatientId = int.Parse(((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value);
-            if (await _appointmentService.UpdateAppointment(app,id))
-                return Ok();
+            try
+            {
+                var app = _mapper.Map<Appointment>(appointment);
+                var userIdClaim = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim != null)
+                {
+                    var userId = int.Parse(userIdClaim.Value);
+                    var patient = _context.Patients.FirstOrDefault(p => p.UserId == userId);
+                    if (patient != null) app.PatientId = patient.PatientId;
+                }
 
-            return NotFound("Appointment bulunmadi ");
+                if (await _appointmentService.UpdateAppointment(app, id))
+                    return Ok();
+
+                return NotFound("Appointment bulunmadi");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Bir hata oluştu: " + ex.Message);
+            }
         }
 
         [HttpGet]

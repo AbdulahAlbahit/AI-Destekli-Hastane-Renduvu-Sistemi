@@ -1,4 +1,4 @@
-﻿using Business_Layer.IServices;
+using Business_Layer.IServices;
 using Data_Accese_Layer.Dto;
 using Data_Accese_Layer.Entities;
 using Data_Accese_Layer.IRepos;
@@ -44,7 +44,7 @@ namespace Business_Layer.Services
           return await _appointment.GetAppointmentById(id);
         }
 
-        public async Task<AppointmentDetailDto> GetAppointmentByUserId(int userId)
+        public async Task<List<AppointmentDetailDto>> GetAppointmentByUserId(int userId)
         {
             return await _appointment.GetAppointmentByUserId(userId);
 

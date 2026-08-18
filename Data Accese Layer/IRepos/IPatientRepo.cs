@@ -1,4 +1,4 @@
-﻿using Data_Accese_Layer.Entities;
+using Data_Accese_Layer.Entities;
 
 namespace Data_Accese_Layer.IRepos
 {
@@ -7,6 +7,7 @@ namespace Data_Accese_Layer.IRepos
 
         Task<bool> AddPatient(Patient patient);
         Task<Patient> GetPatient(int UserId);
+        Task<bool> UpdatePatient(Patient patient);
 
 
     }

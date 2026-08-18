@@ -20,6 +20,17 @@ namespace Api_Layer
             builder.Services.AddDataAccessServices(connstring);
             builder.Services.AddBusinessServices();
 
+            // CORS - Frontend erişimi için
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             builder.Services.AddAutoMapper(typeof(MappingProfile));
             builder.Services.AddHttpClient();
             
@@ -77,6 +88,8 @@ namespace Api_Layer
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowFrontend");
 
             app.UseAuthorization();
 
