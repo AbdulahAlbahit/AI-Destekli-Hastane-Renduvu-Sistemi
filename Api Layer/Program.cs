@@ -83,15 +83,21 @@ namespace Api_Layer
 
             // Configure the HTTP request pipeline.
          
-                app.UseSwagger();
-                app.UseSwaggerUI();
-         
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-            // app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); 
 
-            app.UseCors("AllowFrontend");
+// Frontend dosyalar?n? (.html, .css, .js) wwwroot klas?r?nden sunmak i?in ekledik
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
-            app.UseAuthorization();
+app.UseCors("AllowFrontend");
+
+app.UseAuthorization();
 
 
             app.MapControllers();
