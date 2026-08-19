@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedRandevu — Giriş</title>
-  <meta name="description" content="MedRandevu Hastane Randevu Sistemi — Giriş yapın veya hesap oluşturun.">
+  <title>MedRandevu — Yapay Zeka Destekli Hastane Randevu Sistemi</title>
+  <meta name="description" content="MedRandevu ile yapay zeka destekli hastane randevu sistemi. Kolayca randevu alın, doktorlarınızı seçin ve sağlığınızı yönetin.">
 
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
@@ -13,154 +13,390 @@
 </head>
 <body>
 
-  <div class="auth-page">
-    <div class="auth-container">
-
-      <!-- Brand -->
-      <div class="auth-brand">
-        <div class="auth-brand-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ═══════════════════════════════════════════
+       NAVBAR
+       ═══════════════════════════════════════════ -->
+  <nav class="landing-nav" id="landing-nav">
+    <div class="landing-nav-inner">
+      <a href="index.html" class="landing-logo">
+        <div class="landing-logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
           </svg>
         </div>
-        <h1>MedRandevu</h1>
-        <p>Yapay Zeka Destekli Hastane Randevu Sistemi</p>
+        <span>MedRandevu</span>
+      </a>
+
+      <ul class="landing-nav-links" id="nav-links">
+        <li><a href="#hero">Ana Sayfa</a></li>
+        <li><a href="#features">Özellikler</a></li>
+        <li><a href="#stats">Hakkımızda</a></li>
+        <li><a href="#contact">İletişim</a></li>
+      </ul>
+
+      <div class="landing-nav-actions">
+        <a href="login.html" class="btn btn-outline-light btn-nav">Giriş Yap</a>
+        <a href="register.html" class="btn btn-primary btn-nav">Kayıt Ol</a>
       </div>
 
-      <!-- Login Card -->
-      <div class="auth-card">
-        <form class="auth-form" id="login-form" novalidate>
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menüyü aç/kapat">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
 
-          <!-- TC Kimlik No -->
-          <div class="form-group">
-            <label class="form-label" for="tc-input">TC Kimlik Numarası <span class="required">*</span></label>
-            <div class="input-with-icon">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-              <input
-                type="text"
-                class="form-input"
-                id="tc-input"
-                placeholder="11 haneli TC kimlik numaranız"
-                maxlength="11"
-                autocomplete="username"
-                required
-              >
-            </div>
-            <span class="form-error" id="tc-error"></span>
+  <!-- ═══════════════════════════════════════════
+       HERO SECTION
+       ═══════════════════════════════════════════ -->
+  <section class="hero-section" id="hero">
+    <div class="hero-bg-shapes">
+      <div class="hero-shape hero-shape-1"></div>
+      <div class="hero-shape hero-shape-2"></div>
+      <div class="hero-shape hero-shape-3"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Yapay Zeka Destekli
+        </div>
+        <h1>Hastane Randevu <br><span class="hero-highlight">Sisteminiz</span> Hazır</h1>
+        <p>Sağlığınızı yönetmenin en akıllı yolu. Yapay zeka destekli asistanımız ile size en uygun doktoru ve randevu saatini kolayca bulun.</p>
+        <div class="hero-actions">
+          <a href="register.html" class="btn btn-primary btn-xl" id="hero-cta">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+            Hemen Başlayın
+          </a>
+          <a href="#features" class="btn btn-ghost btn-xl">
+            Daha Fazla Bilgi
+          </a>
+        </div>
+        <div class="hero-trust">
+          <div class="hero-trust-avatars">
+            <div class="hero-avatar" style="background: linear-gradient(135deg, #C2603F, #E8A88E);">A</div>
+            <div class="hero-avatar" style="background: linear-gradient(135deg, #2D5F3E, #6BA37E);">M</div>
+            <div class="hero-avatar" style="background: linear-gradient(135deg, #5B8DB8, #8CB8D8);">F</div>
           </div>
-
-          <!-- Password -->
-          <div class="form-group">
-            <label class="form-label" for="password-input">Şifre <span class="required">*</span></label>
-            <div class="input-with-icon">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-              <input
-                type="password"
-                class="form-input"
-                id="password-input"
-                placeholder="Şifrenizi girin"
-                autocomplete="current-password"
-                required
-              >
-              <button type="button" class="toggle-password" id="toggle-password" aria-label="Şifreyi göster/gizle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
-                </svg>
-              </button>
-            </div>
-            <span class="form-error" id="password-error"></span>
-          </div>
-
-          <!-- Submit -->
-          <button type="submit" class="btn btn-primary btn-lg btn-block" id="login-btn">
-            Giriş Yap
-          </button>
-        </form>
-
-        <!-- Register Link -->
-        <div class="auth-footer">
-          Hesabınız yok mu? <a href="register.html">Hesap Oluştur</a>
+          <span>500+ hasta güveniyor</span>
         </div>
       </div>
 
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <!-- Floating Card 1: Randevu -->
+          <div class="hero-float-card hero-float-card-1">
+            <div class="hero-float-icon" style="background: var(--clr-primary-bg); color: var(--clr-primary);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </div>
+            <div>
+              <strong>Randevunuz Onaylandı</strong>
+              <small>Dr. Ahmet Yılmaz — 14:30</small>
+            </div>
+          </div>
+
+          <!-- Floating Card 2: AI -->
+          <div class="hero-float-card hero-float-card-2">
+            <div class="hero-float-icon" style="background: var(--clr-success-bg); color: var(--clr-success);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+            </div>
+            <div>
+              <strong>AI Analiz Tamamlandı</strong>
+              <small>Kardiyoloji bölümü önerildi</small>
+            </div>
+          </div>
+
+          <!-- Floating Card 3: Doctor -->
+          <div class="hero-float-card hero-float-card-3">
+            <div class="hero-float-icon" style="background: rgba(91,141,184,0.1); color: var(--clr-info);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <strong>5 Uzman Doktor</strong>
+              <small>Her alanda hizmetinizde</small>
+            </div>
+          </div>
+
+          <!-- Central Pulse Animation -->
+          <div class="hero-pulse-ring">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--clr-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
+  <!-- ═══════════════════════════════════════════
+       FEATURES SECTION
+       ═══════════════════════════════════════════ -->
+  <section class="features-section" id="features">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">Özellikler</span>
+        <h2>Neden <span class="text-primary">MedRandevu</span>?</h2>
+        <p>Modern sağlık hizmetlerine erişimi kolaylaştıran üstün özellikler</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--clr-primary-bg); color: var(--clr-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <h3>Kolay Randevu</h3>
+          <p>Birkaç tıkla istediğiniz bölümde, istediğiniz doktora kolayca randevu alın. Beklemek yok, sıra yok!</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--clr-success-bg); color: var(--clr-success);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            </svg>
+          </div>
+          <h3>AI Asistan</h3>
+          <p>Yapay zeka destekli asistanımız şikayetlerinizi analiz eder ve size en uygun bölümü önerir.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(91,141,184,0.1); color: var(--clr-info);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3>Uzman Doktorlar</h3>
+          <p>Alanında uzman doktor kadromuz ile sağlığınız güvende. Her bölümde deneyimli hekimler.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--clr-warning-bg); color: var(--clr-warning);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>7/24 Erişim</h3>
+          <p>Günün her saati, haftanın her günü randevunuzu online olarak yönetin. İstediğiniz zaman erişin.</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card">
+          <div class="feature-icon" style="background: var(--clr-danger-bg); color: var(--clr-danger);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>Güvenli Sistem</h3>
+          <p>Kişisel verileriniz ve sağlık bilgileriniz en üst düzey güvenlik standartları ile korunmaktadır.</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(45,95,62,0.1); color: var(--clr-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3>Kolay Kullanım</h3>
+          <p>Modern ve sezgisel arayüz ile her yaştan kullanıcı kolayca randevu alabilir ve takip edebilir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       STATS SECTION
+       ═══════════════════════════════════════════ -->
+  <section class="stats-section" id="stats">
+    <div class="section-container">
+      <div class="stats-content">
+        <div class="stats-text">
+          <span class="section-tag">Hakkımızda</span>
+          <h2>Sağlığınız İçin <span class="text-primary">Yanınızdayız</span></h2>
+          <p>MedRandevu olarak amacımız, hastane randevu süreçlerini dijitalleştirerek hem hastaların hem de sağlık kuruluşlarının işini kolaylaştırmaktır. Yapay zeka teknolojisi ile desteklenen sistemimiz, size en doğru yönlendirmeyi sunar.</p>
+        </div>
+        <div class="stats-numbers">
+          <div class="stat-block">
+            <div class="stat-number" data-target="500">0</div>
+            <div class="stat-desc">Mutlu Hasta</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" data-target="5">0</div>
+            <div class="stat-desc">Bölüm</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number" data-target="5">0</div>
+            <div class="stat-desc">Uzman Doktor</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number stat-text" data-target="7/24">7/24</div>
+            <div class="stat-desc">Online Erişim</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CTA SECTION
+       ═══════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="section-container">
+      <div class="cta-card">
+        <div class="cta-content">
+          <h2>Hemen Ücretsiz Başlayın</h2>
+          <p>Hesap oluşturun ve yapay zeka destekli hastane randevu sistemimizin tüm avantajlarından yararlanın.</p>
+          <div class="cta-actions">
+            <a href="register.html" class="btn btn-white btn-xl">
+              Ücretsiz Kayıt Ol
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="login.html" class="btn btn-ghost-white btn-xl">Giriş Yap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ -->
+  <footer class="landing-footer" id="contact">
+    <div class="section-container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="landing-logo">
+            <div class="landing-logo-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+            </div>
+            <span>MedRandevu</span>
+          </div>
+          <p>Yapay zeka destekli modern hastane randevu sistemi. Sağlığınız bizim önceliğimiz.</p>
+        </div>
+
+        <div class="footer-links-group">
+          <h4>Hızlı Erişim</h4>
+          <ul>
+            <li><a href="#hero">Ana Sayfa</a></li>
+            <li><a href="#features">Özellikler</a></li>
+            <li><a href="#stats">Hakkımızda</a></li>
+            <li><a href="login.html">Giriş Yap</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-group">
+          <h4>İletişim</h4>
+          <ul>
+            <li>📍 İstanbul, Türkiye</li>
+            <li>📧 info@medrandevu.com</li>
+            <li>📞 +90 555 123 4567</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 MedRandevu. Tüm hakları saklıdır.</p>
+      </div>
+    </div>
+  </footer>
+
   <script>
-    // Redirect if already logged in
-    redirectIfLoggedIn();
-
-    // Toggle password visibility
-    const toggleBtn = document.getElementById('toggle-password');
-    const passwordInput = document.getElementById('password-input');
-    toggleBtn.addEventListener('click', () => {
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
+    // ── Navbar scroll effect ──
+    const nav = document.getElementById('landing-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
     });
 
-    // Login form submit
-    const form = document.getElementById('login-form');
-    const loginBtn = document.getElementById('login-btn');
-    const tcInput = document.getElementById('tc-input');
-    const tcError = document.getElementById('tc-error');
-    const passError = document.getElementById('password-error');
+    // ── Mobile menu toggle ──
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    mobileToggle.addEventListener('click', () => {
+      mobileToggle.classList.toggle('active');
+      navLinks.classList.toggle('mobile-open');
+    });
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    // Close mobile menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileToggle.classList.remove('active');
+        navLinks.classList.remove('mobile-open');
+      });
+    });
 
-      // Reset errors
-      tcError.textContent = '';
-      passError.textContent = '';
-      tcInput.classList.remove('is-error');
-      passwordInput.classList.remove('is-error');
-
-      const tc = tcInput.value.trim();
-      const password = passwordInput.value;
-
-      // Validation
-      let valid = true;
-      if (!tc || tc.length !== 11) {
-        tcError.textContent = 'TC Kimlik numarası 11 haneli olmalıdır.';
-        tcInput.classList.add('is-error');
-        valid = false;
-      }
-      if (!password) {
-        passError.textContent = 'Şifre boş bırakılamaz.';
-        passwordInput.classList.add('is-error');
-        valid = false;
-      }
-      if (!valid) return;
-
-      // API call
-      setButtonLoading(loginBtn, true);
-      try {
-        const result = await AuthAPI.login(tc, password);
-        if (result.ok) {
-          saveToken(result.data);
-          window.location.href = 'dashboard.html';
-        } else {
-          showToast(result.data || 'Kullanıcı bulunamadı. TC veya şifre hatalı.', 'danger');
+    // ── Smooth scroll for anchor links ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-      } catch (err) {
-        showToast(err.message, 'danger');
-      } finally {
-        setButtonLoading(loginBtn, false);
-      }
+      });
     });
 
-    // TC input — only allow digits
-    tcInput.addEventListener('input', () => {
-      tcInput.value = tcInput.value.replace(/\D/g, '');
-    });
+    // ── Counter animation ──
+    const counters = document.querySelectorAll('.stat-number[data-target]');
+    const observerOptions = { threshold: 0.5 };
+
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          if (el.classList.contains('stat-text')) return;
+          const target = parseInt(el.getAttribute('data-target'));
+          const duration = 2000;
+          const increment = target / (duration / 16);
+          let current = 0;
+
+          const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+              el.textContent = Math.floor(current) + '+';
+              requestAnimationFrame(updateCounter);
+            } else {
+              el.textContent = target + '+';
+            }
+          };
+          updateCounter();
+          counterObserver.unobserve(el);
+        }
+      });
+    }, observerOptions);
+
+    counters.forEach(counter => counterObserver.observe(counter));
+
+    // ── Fade-in on scroll ──
+    const fadeElements = document.querySelectorAll('.feature-card, .stat-block, .cta-card');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    fadeElements.forEach(el => fadeObserver.observe(el));
   </script>
 
 </body>

@@ -30,7 +30,7 @@ async function apiFetch(endpoint, options = {}) {
     // Handle 401 — redirect to login
     if (response.status === 401) {
       localStorage.removeItem('medrandevu_token');
-      window.location.href = 'index.html';
+      window.location.href = 'login.html';
       throw new Error('Oturum süresi doldu. Lütfen tekrar giriş yapın.');
     }
 

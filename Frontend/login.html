@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedRandevu — Giriş</title>
+  <meta name="description" content="MedRandevu Hastane Randevu Sistemi — Giriş yapın veya hesap oluşturun.">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-container">
+
+      <!-- Brand -->
+      <div class="auth-brand">
+        <div class="auth-brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <h1>MedRandevu</h1>
+        <p>Yapay Zeka Destekli Hastane Randevu Sistemi</p>
+      </div>
+
+      <!-- Login Card -->
+      <div class="auth-card">
+        <form class="auth-form" id="login-form" novalidate>
+
+          <!-- TC Kimlik No -->
+          <div class="form-group">
+            <label class="form-label" for="tc-input">TC Kimlik Numarası <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input
+                type="text"
+                class="form-input"
+                id="tc-input"
+                placeholder="11 haneli TC kimlik numaranız"
+                maxlength="11"
+                autocomplete="username"
+                required
+              >
+            </div>
+            <span class="form-error" id="tc-error"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label" for="password-input">Şifre <span class="required">*</span></label>
+            <div class="input-with-icon">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input
+                type="password"
+                class="form-input"
+                id="password-input"
+                placeholder="Şifrenizi girin"
+                autocomplete="current-password"
+                required
+              >
+              <button type="button" class="toggle-password" id="toggle-password" aria-label="Şifreyi göster/gizle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span class="form-error" id="password-error"></span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="login-btn">
+            Giriş Yap
+          </button>
+        </form>
+
+        <!-- Register Link -->
+        <div class="auth-footer">
+          Hesabınız yok mu? <a href="register.html">Hesap Oluştur</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    redirectIfLoggedIn();
+
+    // Toggle password visibility
+    const toggleBtn = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password-input');
+    toggleBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+    });
+
+    // Login form submit
+    const form = document.getElementById('login-form');
+    const loginBtn = document.getElementById('login-btn');
+    const tcInput = document.getElementById('tc-input');
+    const tcError = document.getElementById('tc-error');
+    const passError = document.getElementById('password-error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Reset errors
+      tcError.textContent = '';
+      passError.textContent = '';
+      tcInput.classList.remove('is-error');
+      passwordInput.classList.remove('is-error');
+
+      const tc = tcInput.value.trim();
+      const password = passwordInput.value;
+
+      // Validation
+      let valid = true;
+      if (!tc || tc.length !== 11) {
+        tcError.textContent = 'TC Kimlik numarası 11 haneli olmalıdır.';
+        tcInput.classList.add('is-error');
+        valid = false;
+      }
+      if (!password) {
+        passError.textContent = 'Şifre boş bırakılamaz.';
+        passwordInput.classList.add('is-error');
+        valid = false;
+      }
+      if (!valid) return;
+
+      // API call
+      setButtonLoading(loginBtn, true);
+      try {
+        const result = await AuthAPI.login(tc, password);
+        if (result.ok) {
+          saveToken(result.data);
+          window.location.href = 'dashboard.html';
+        } else {
+          showToast(result.data || 'Kullanıcı bulunamadı. TC veya şifre hatalı.', 'danger');
+        }
+      } catch (err) {
+        showToast(err.message, 'danger');
+      } finally {
+        setButtonLoading(loginBtn, false);
+      }
+    });
+
+    // TC input — only allow digits
+    tcInput.addEventListener('input', () => {
+      tcInput.value = tcInput.value.replace(/\D/g, '');
+    });
+  </script>
+
+</body>
+</html>

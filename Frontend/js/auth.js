@@ -40,13 +40,13 @@ function saveToken(token) {
 
 function logout() {
   localStorage.removeItem(TOKEN_KEY);
-  window.location.href = 'index.html';
+  window.location.href = 'login.html';
 }
 
 /** Redirect to login if not authenticated (call on protected pages) */
 function requireAuth() {
   if (!isLoggedIn()) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   }
 }
 
