@@ -1,26 +1,18 @@
-# 🏥 MedRandevu — AI Destekli Hastane Randevu Sistemi
+# MedRandevu — AI Destekli Hastane Randevu Sistemi
 
 Hastaların online ortamda kolayca randevu alabileceği, yapay zeka ile doğru bölüme yönlendirileceği bir hastane randevu sistemidir.
 
-🔗 **Canlı Demo:** [midrandevu.vercel.app](https://midrandevu.vercel.app)
+**Canlı Demo:** [midrandevu.vercel.app](https://midrandevu.vercel.app)
 
 ---
 
-## 📸 Ekran Görüntüleri
-
-| Ana Sayfa | Giriş Ekranı | Dashboard |
-|-----------|-------------|-----------|
-| Landing page ile karşılama | TC ve şifre ile giriş | Randevular, AI asistan, hızlı işlemler |
-
----
-
-## 🎯 Projenin Amacı
+## Projenin Amacı
 
 Hastane randevu süreçlerini dijitalleştirmek ve hastaları yapay zeka yardımıyla doğru uzmanlara yönlendirmek. Kullanıcılar sisteme giriş yaptıktan sonra bölüm seçebilir, doktor seçebilir, uygun saat belirleyerek randevusunu oluşturabilir. Ayrıca AI asistana şikayetlerini yazarak hangi bölüme gitmesi gerektiği konusunda öneri alabilir.
 
 ---
 
-## 💡 Özellikler
+## Özellikler
 
 - **Kullanıcı Kayıt & Giriş** — TC kimlik numarası ve şifre ile JWT tabanlı güvenli oturum
 - **Bölüm & Doktor Listeleme** — Tüm bölümler, klinikler ve doktorlar listelenir
@@ -32,7 +24,7 @@ Hastane randevu süreçlerini dijitalleştirmek ve hastaları yapay zeka yardım
 
 ---
 
-## ⚙️ Teknolojiler
+## Teknolojiler
 
 ### Backend
 | Teknoloji | Açıklama |
@@ -58,7 +50,7 @@ Hastane randevu süreçlerini dijitalleştirmek ve hastaları yapay zeka yardım
 
 ---
 
-## 🏗️ Proje Mimarisi
+## Proje Mimarisi
 
 ```
 ├── Api Layer/              # ASP.NET Core Web API
@@ -92,7 +84,7 @@ Hastane randevu süreçlerini dijitalleştirmek ve hastaları yapay zeka yardım
 
 ---
 
-## 🚀 Kurulum (Yerelde Çalıştırma)
+## Kurulum (Yerelde Çalıştırma)
 
 ### Gereksinimler
 - .NET 10 SDK
@@ -122,16 +114,6 @@ dotnet run --project "Api Layer/Api Layer.csproj"
 
 ---
 
-## 👨‍💻 Ekip
-
-| İsim | Görev |
-|------|-------|
-| İbrahim Ebu Şeneb | Geliştirici |
-| Abdullah Albahit | Geliştirici |
-| Yasir Elkeleş | Geliştirici |
-
----
-
-## 📄 Lisans
+## Lisans
 
 Bu proje eğitim amaçlı geliştirilmiştir.
