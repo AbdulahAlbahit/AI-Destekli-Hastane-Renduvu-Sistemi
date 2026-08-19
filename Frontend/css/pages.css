@@ -137,6 +137,24 @@
   text-decoration: underline;
 }
 
+/* ── Back to Home Link ── */
+.auth-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--clr-text-muted);
+  text-decoration: none;
+  margin-bottom: var(--sp-6);
+  transition: all var(--transition-fast);
+  font-weight: var(--fw-medium);
+}
+
+.auth-back-link:hover {
+  color: var(--clr-primary);
+  transform: translateX(-3px);
+}
+
 /* ── Input with icon ── */
 .input-with-icon {
   position: relative;
