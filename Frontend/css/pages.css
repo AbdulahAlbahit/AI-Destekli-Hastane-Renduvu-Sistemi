@@ -137,22 +137,30 @@
   text-decoration: underline;
 }
 
-/* ── Back to Home Link ── */
+/* ── Back to Home Button ── */
 .auth-back-link {
+  position: fixed;
+  top: var(--sp-6);
+  left: var(--sp-6);
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
   font-size: var(--fs-sm);
-  color: var(--clr-text-muted);
+  color: var(--clr-text-inverse);
+  background: var(--clr-primary);
   text-decoration: none;
-  margin-bottom: var(--sp-6);
-  transition: all var(--transition-fast);
-  font-weight: var(--fw-medium);
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+  font-weight: var(--fw-semibold);
+  box-shadow: var(--shadow-primary);
+  z-index: 100;
 }
 
 .auth-back-link:hover {
-  color: var(--clr-primary);
+  background: var(--clr-primary-hover);
   transform: translateX(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* ── Input with icon ── */
