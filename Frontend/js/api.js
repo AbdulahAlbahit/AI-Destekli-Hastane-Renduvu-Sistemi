@@ -2,7 +2,8 @@
    MedRandevu — API Service Layer
    ============================================ */
 
-const API_BASE_URL = 'http://midrandevu.somee.com';
+// Vercel üzerinden proxy yaparak Somee'ye (HTTP) güvenli istek atmak için /api kullanıyoruz.
+const API_BASE_URL = '/api';
 
 /**
  * Centralized fetch wrapper that auto-attaches JWT token
