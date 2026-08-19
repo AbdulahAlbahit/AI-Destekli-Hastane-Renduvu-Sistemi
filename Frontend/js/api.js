@@ -2,7 +2,7 @@
    MedRandevu — API Service Layer
    ============================================ */
 
-const API_BASE_URL = 'https://localhost:7016';
+const API_BASE_URL = 'http://midrandevu.somee.com';
 
 /**
  * Centralized fetch wrapper that auto-attaches JWT token

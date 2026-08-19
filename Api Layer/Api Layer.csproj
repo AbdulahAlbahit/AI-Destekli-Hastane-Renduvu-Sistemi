@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Api_Layer</RootNamespace>
 	  <NoWarn>$(NoWarn);NU1903</NoWarn>
+	  <UserSecretsId>74f3039b-747d-4e6c-b14d-2020e226373c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.1.7" />
   </ItemGroup>
