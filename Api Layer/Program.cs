@@ -1,4 +1,5 @@
 using Api_Layer.topla;
+using Microsoft.EntityFrameworkCore;
 using Business_Layer;
 using Business_Layer.IServices;
 using Business_Layer.Services;
@@ -81,13 +82,12 @@ namespace Api_Layer
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+         
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+         
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseCors("AllowFrontend");
 
@@ -95,6 +95,15 @@ namespace Api_Layer
 
 
             app.MapControllers();
+
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+                // Uygulama başlarken veritabanı tablolarını otomatik oluşturur
+                db.Database.Migrate();
+            }
 
             app.Run();
         }

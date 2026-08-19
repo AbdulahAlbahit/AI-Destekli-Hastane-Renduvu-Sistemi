@@ -30,45 +30,47 @@ namespace Api_Layer.Controllers
         [Route("")]
         public async Task<ActionResult<string>> Authentication(UserRequest request)
         {
-            var user = new Users
+            try
             {
-                TC = request.Tc,
-                Password = request.Password
-            };
-           
-            var User=await _userService.CheckUser(user);
-            
-            if(User!=null)
-            {
-                var handler = new JwtSecurityTokenHandler();
-
-                var Descriptor = new SecurityTokenDescriptor
+                var user = new Users
                 {
-                    Issuer = _jwt.Issuer,
-                    Audience = _jwt.Audience,
-                    
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SigningKey)),
-                    SecurityAlgorithms.HmacSha256
-                    ),
-                    Subject=new ClaimsIdentity(new Claim[]
-                    {
-                        // JWT'ye PatientId yerine sistemin geneliyle uyumlu olması için doğrudan User.Id basılıyor.
-                        // Böylece Patient kaydı olmasa da (yeni hesap) giriş yaparken çökmez.
-                        new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
-                    })
+                    TC = request.Tc,
+                    Password = request.Password
                 };
+               
+                var User = await _userService.CheckUser(user);
+                
+                if(User != null)
+                {
+                    var handler = new JwtSecurityTokenHandler();
 
-                var token=handler.CreateToken(Descriptor);
-                var AccessToken=handler.WriteToken(token);
-                return Ok(AccessToken);
+                    var Descriptor = new SecurityTokenDescriptor
+                    {
+                        Issuer = _jwt.Issuer,
+                        Audience = _jwt.Audience,
+                        
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SigningKey)),
+                        SecurityAlgorithms.HmacSha256
+                        ),
+                        Subject=new ClaimsIdentity(new Claim[]
+                        {
+                            // JWT'ye PatientId yerine sistemin geneliyle uyumlu olması için doğrudan User.Id basılıyor.
+                            // Böylece Patient kaydı olmasa da (yeni hesap) giriş yaparken çökmez.
+                            new Claim(ClaimTypes.NameIdentifier, User.Id.ToString())
+                        })
+                    };
 
+                    var token = handler.CreateToken(Descriptor);
+                    var AccessToken = handler.WriteToken(token);
+                    return Ok(AccessToken);
+                }
 
-
+                return NotFound("Kullanci Bulunmadi");
             }
-
-            return NotFound("Kullanci Bulunmadi");
-
-
+            catch (Exception ex)
+            {
+                return BadRequest("SUNUCU HATASI: " + ex.Message + (ex.InnerException != null ? " INNER: " + ex.InnerException.Message : ""));
+            }
         }
 
 
