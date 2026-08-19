@@ -112,7 +112,7 @@
 
         <!-- Login Link -->
         <div class="auth-footer">
-          Zaten hesabınız var mı? <a href="index.html">Giriş Yap</a>
+          Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a>
         </div>
       </div>
 
@@ -213,7 +213,7 @@
         if (result.ok) {
           showToast('Hesabınız başarıyla oluşturuldu! Giriş yapabilirsiniz.', 'success');
           setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
           }, 1500);
         } else {
           showToast(result.data || 'Kayıt oluşturulamadı. Lütfen tekrar deneyin.', 'danger');
